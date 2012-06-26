@@ -16,8 +16,18 @@ angular.module('links', ['links.service', 'links.directive', 'links.filter'], fu
 
 })
 
-var SearchController = function($scope) {
+var SearchController = function($scope, $http) {
+
   $scope.page = 'Search';
+
+  var uri = 'https://geoffreymoller.cloudant.com/collect/_design/uri/_view/uri?descending=true&limit=10&callback=?';
+  var promise = $.getJSON(uri);
+  promise.success(function(data){
+    $scope.$apply(function () {
+      $scope.links = data.rows;
+    });
+  });
+
 }
 
 var VizController = function($scope) {

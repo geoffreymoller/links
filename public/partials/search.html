@@ -1,1 +1,8 @@
 <ng-include src="'partials/header.html'"></ng-include>
+
+<ul>
+  <li ng-repeat="link in links">
+    <a href="{{link.value.uri}}" target="_blank">{{link.value.title}}</a>
+  </li>
+</ul>
+
