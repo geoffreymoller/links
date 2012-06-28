@@ -2,7 +2,9 @@
 
 <ul>
   <li ng-repeat="link in links">
-    <a href="{{link.value.URI}}" target="_blank">{{link.value.title}}</a>
+    <a href="{{link.value.URI || link.value.uri}}" target="_blank">{{link.value.title}}</a>
   </li>
 </ul>
+
+<ng-include src="'partials/footer.html'"></ng-include>
 
