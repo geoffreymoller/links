@@ -4,7 +4,7 @@ angular.module('links.filter', []);
 
 angular.module('links', ['links.service', 'links.directive', 'links.filter'], function($routeProvider, $locationProvider){
 
-  $routeProvider.when('/search', {
+  $routeProvider.when('/search/:tag', {
     templateUrl: 'partials/search.html',
     controller: SearchController
   });
@@ -16,11 +16,20 @@ angular.module('links', ['links.service', 'links.directive', 'links.filter'], fu
 
 })
 
-var SearchController = function($scope, $http) {
+var SearchController = function($scope, $http, $routeParams) {
 
   $scope.page = 'Search';
+  var tag = $routeParams.tag;
+  var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
+  var uri;
 
-  var uri = 'https://geoffreymoller.cloudant.com/collect/_design/uri/_view/uri?descending=true&limit=10&callback=?';
+  if(tag && tag !== 'all'){
+    uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
+  }
+  else {
+    uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
+  }
+  
   var promise = $.getJSON(uri);
   promise.success(function(data){
     $scope.$apply(function () {
