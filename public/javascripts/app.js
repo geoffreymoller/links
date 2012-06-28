@@ -41,6 +41,12 @@ var SearchController = function($scope, $http, $routeParams) {
       _.each(data.rows, function(link, index){
         collection.add(link);
       });
+      $scope.count = collection.length;
+      $('.pagination').pagination({
+        items: $scope.count,
+        itemsOnPage: 10,
+        cssStyle: 'compact-theme'
+      });
       $scope.links = collection.toJSON();
     });
   });
