@@ -18,6 +18,11 @@ angular.module('links', ['links.service', 'links.directive', 'links.filter'], fu
 
 var SearchController = function($scope, $http, $routeParams) {
 
+  var collection = new Backbone.Collection();
+  collection.comparator = function(link){
+    return -link.get('value').date;
+  }
+
   $scope.page = 'Search';
   var tag = $routeParams.tag;
   var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
@@ -33,7 +38,10 @@ var SearchController = function($scope, $http, $routeParams) {
   var promise = $.getJSON(uri);
   promise.success(function(data){
     $scope.$apply(function () {
-      $scope.links = data.rows;
+      _.each(data.rows, function(link, index){
+        collection.add(link);
+      });
+      $scope.links = collection.toJSON();
     });
   });
 
