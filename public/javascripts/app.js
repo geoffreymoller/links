@@ -7,51 +7,17 @@ angular.module('links', ['links.service', 'links.directive', 'links.filter'], fu
   $routeProvider.when('/search/:tag', {
     templateUrl: 'partials/search.html',
     controller: SearchController
-  });
-
-  $routeProvider.when('/viz', {
+  }).
+  when('/search/:tag/:page', {
+    templateUrl: 'partials/search.html',
+    controller: SearchController
+  }).
+  when('/viz', {
     templateUrl: 'partials/viz.html',
     controller: VizController
-  });
-
+  }).
+  otherwise({redirectTo: '/search/'});
 })
-
-var SearchController = function($scope, $http, $routeParams) {
-
-  var collection = new Backbone.Collection();
-  collection.comparator = function(link){
-    return -link.get('value').date;
-  }
-
-  $scope.page = 'Search';
-  var tag = $routeParams.tag;
-  var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
-  var uri;
-
-  if(tag && tag !== 'all'){
-    uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
-  }
-  else {
-    uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
-  }
-  
-  var promise = $.getJSON(uri);
-  promise.success(function(data){
-    $scope.$apply(function () {
-      _.each(data.rows, function(link, index){
-        collection.add(link);
-      });
-      $scope.count = collection.length;
-      $('.pagination').pagination({
-        items: $scope.count,
-        itemsOnPage: 10,
-        cssStyle: 'compact-theme'
-      });
-      $scope.links = collection.toJSON();
-    });
-  });
-
-}
 
 var VizController = function($scope) {
   $scope.page = 'Viz';
