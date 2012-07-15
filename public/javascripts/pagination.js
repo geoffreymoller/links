@@ -19,13 +19,14 @@ var pagination = function(page, pageLength){
 
     }
 
+    //TODO - write a fucking test
     this.page = page ? page - 1 : 0;
     this.start = this.page * pageLength;
     if(this.page === 0){
-        this.end = pageLength - 1;
+        this.end = pageLength;
     }
     else {
-        this.end = this.start + pageLength - 1;
+        this.end = this.start + pageLength;
     }
 
 }

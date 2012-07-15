@@ -5,13 +5,16 @@ var SearchController = function($scope, $http, $location, $routeParams) {
     return -link.get('value').date;
   }
 
-  $scope.pageName = 'Search';
+  $scope.pageName = 'Collect';
+  $scope.pageLength = 5; 
+
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
   var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
   var uri;
 
   if(tag && tag !== 'all'){
+    $scope.pageName += ': ' + tag;
     uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
   }
   else {
@@ -26,7 +29,7 @@ var SearchController = function($scope, $http, $location, $routeParams) {
         collection.add(link);
       });
 
-      var p = new pagination(page, 10);
+      var p = new pagination(page, $scope.pageLength);
       $scope.count = collection.length;
       $scope.links = collection.toJSON().slice(p.start, p.end);
 
@@ -36,6 +39,10 @@ var SearchController = function($scope, $http, $location, $routeParams) {
         var suffix = hash.split('/').length === 3 ? '/' + index : '';
         window.location.href = location.origin + '/' + hash + suffix;
       });
+
+      if(!($scope.count > $scope.pageLength)){
+        $('.pagination').hide();
+      }
 
     });
   });

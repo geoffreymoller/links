@@ -1,8 +1,13 @@
 <ng-include src="'partials/header.html'"></ng-include>
 
-<ul>
-  <li ng-repeat="link in links">
-    <a href="{{link.value.URI || link.value.uri}}" target="_blank">{{link.value.title}}</a>
+<ul id="links">
+  <li class="clearfix" ng-repeat="link in links">
+    <a href="{{link.value | uri}}" target="_blank">{{link.value.title}}</a>
+    <div class="date">{{link.value | date}}</div>
+    <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri}}</a>
+    <div class="tags">
+      <a ng-repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
+    </div>
   </li>
 </ul>
 

@@ -1,6 +1,17 @@
 angular.module('links.service', []);
 angular.module('links.directive', []);
-angular.module('links.filter', []);
+angular.module('links.filter', []).
+  filter('date', function() {
+    return function(value) {
+      var date = value.date || value.date_created; 
+      return (new Date(date)).toDateString();
+    }
+  }).
+  filter('uri', function() {
+    return function(value) {
+      return value.uri || value.URI;
+    }
+  })
 
 angular.module('links', ['links.service', 'links.directive', 'links.filter'], function($routeProvider, $locationProvider){
 
