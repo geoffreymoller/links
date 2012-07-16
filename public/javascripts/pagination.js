@@ -1,7 +1,7 @@
 var pagination = function(page, pageLength){
 
     this.paint = function(collectionLength, callback){
-
+      
         function pageSelectCallback(index){
             callback(index);
             return false;
@@ -12,7 +12,7 @@ var pagination = function(page, pageLength){
             onClick: _.bind(pageSelectCallback, this)
             , currentPage: this.page + 1
             , items: collectionLength
-            , itemsOnPage: 10
+            , itemsOnPage: pageLength
             , cssStyle: 'compact-theme'
           });
         }
@@ -22,11 +22,14 @@ var pagination = function(page, pageLength){
     //TODO - write a fucking test
     this.page = page ? page - 1 : 0;
     this.start = this.page * pageLength;
+    var end = pageLength - 1;
     if(this.page === 0){
-        this.end = pageLength;
+        this.end = end; 
     }
     else {
-        this.end = this.start + pageLength;
+        this.end = this.start + end; 
     }
 
 }
+
+module.exports.pagination = pagination;

@@ -31,7 +31,7 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
       var p = new pagination(page, $scope.pageLength);
       $scope.count = collection.length;
-      $scope.links = collection.toJSON().slice(p.start, p.end);
+      $scope.links = collection.toJSON().slice(p.start, p.end + 1);
 
       p.paint(collection.length, function(index){
         var location = window.location;
