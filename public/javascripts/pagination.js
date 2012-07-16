@@ -19,7 +19,6 @@ var pagination = function(page, pageLength){
 
     }
 
-    //TODO - write a fucking test
     this.page = page ? page - 1 : 0;
     this.start = this.page * pageLength;
     var end = pageLength - 1;
