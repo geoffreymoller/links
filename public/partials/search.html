@@ -5,9 +5,10 @@
     <a href="{{link.value | uri}}" target="_blank">{{link.value.title}}</a>
     <div class="date">{{link.value | date}}</div>
     <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri}}</a>
-    <div class="tags">
+    <div class="tags clearfix">
       <a ng-repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
     </div>
+    <div class="notes">{{link.value.notes}}</div>
   </li>
 </ul>
 

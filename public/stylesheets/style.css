@@ -60,3 +60,9 @@ ul#links div.tags a {
   margin-right: 5px;
   padding: 3px;
 }
+
+div.notes {
+  color: #666;
+  font-size: 11px;
+  margin-top: 10px;
+}
