@@ -8,7 +8,7 @@
     <div class="tags clearfix">
       <a ng-repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
     </div>
-    <div class="notes" ng-show="link.value.notes">{{link.value.notes}}</div>
+    <div class="notes" ng-bind-html-unsafe="link.value.notes" ng-show="link.value.notes"></div>
   </li>
 </ul>
 
