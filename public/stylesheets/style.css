@@ -62,7 +62,11 @@ ul#links div.tags a {
 }
 
 div.notes {
+  box-shadow: 0 0 3px #888;
   color: #666;
   font-size: 11px;
   margin-top: 10px;
+  max-height: 40px;
+  overflow: scroll;
+  padding: 10px;
 }
