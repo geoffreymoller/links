@@ -11,6 +11,14 @@ angular.module('links.filter', []).
     return function(value) {
       return value.uri || value.URI;
     }
+  }).
+  filter('selectedNote', function() {
+    return function(value) {
+      if(this.$index === this.active){
+        value += ' active';
+      } 
+      return value; 
+    }
   })
 
 angular.module('links', ['links.service', 'links.directive', 'links.filter'], function($routeProvider, $locationProvider){

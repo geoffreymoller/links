@@ -1,14 +1,14 @@
 <ng-include src="'partials/header.html'"></ng-include>
 
 <ul id="links">
-  <li class="clearfix" ng-repeat="link in links">
+  <li class="clearfix" ng:repeat="link in links">
     <a href="{{link.value | uri}}" target="_blank">{{link.value.title}}</a>
     <div class="date">{{link.value | date}}</div>
     <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri}}</a>
     <div class="tags clearfix">
-      <a ng-repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
+      <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
     </div>
-    <div class="notes" ng-bind-html-unsafe="link.value.notes" ng-show="link.value.notes"></div>
+    <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="link.value.notes"></div>
   </li>
 </ul>
 
