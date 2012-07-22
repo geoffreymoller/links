@@ -104,6 +104,7 @@ app.post('/update', function(req, res){
   }
 
   var payload = {
+    "title": req.body.title,
     "tags": tags,
     "date_modified": new Date().getTime(),
     "notes": req.body.notes,
