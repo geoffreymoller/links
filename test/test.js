@@ -1,5 +1,5 @@
 var assert = require("assert");
-var pagination = require("../public/javascripts/pagination");
+var pagination = require("../public/javascripts/links/pagination");
 
 describe('pagination', function(){
 
