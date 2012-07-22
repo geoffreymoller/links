@@ -8,6 +8,7 @@ var express = require('express')
   , routes = require('./routes')
   , cradle = require('cradle')
   , port
+  , uuid = require('node-uuid')
   , connection = new(cradle.Connection)('https://geoffreymoller.cloudant.com', 443, {
         auth: { username: process.env.DB_API_KEY, password: process.env.DB_API_SECRET }
     });
@@ -46,6 +47,120 @@ app.get('/getURIByKey', function(req, res){
   var callback = getCallback('Link Retrieved!', res);
   db.view('uri/uriPlain', {key: URI}, callback)
 });
+
+app.post('/save', function(req, res){
+
+  var body = req.body;
+  var uri = body.uri;
+  var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
+
+  if(!isImage){
+    _save(uri);
+  }
+  else {
+    var deferred = upload_image(uri);
+    deferred.then(function(s3Url){
+      _save(s3Url, ['img']);
+    }, function(res){
+      console.log('S3 Error: ' + res.statusCode);
+      throw new Error('S3 Error: ' + res.statusCode);
+    });
+  }
+
+  function _save(path, autoTags){
+    var payload = {
+        title: body.title,
+        URI: path,
+        notes: body.notes,
+        date: new Date().getTime()
+    }
+
+    var tags = body.tags;
+    if(tags){
+        tags = tags.split(',');
+        if(autoTags){
+          tags = tags.concat(autoTags);
+        }
+        payload.tags = tags;
+    }
+
+    var id = uuid()
+    var callback = getCallback('Document Saved!', res);
+    db.save(id, payload, callback);
+  }
+
+});
+
+app.post('/update', function(req, res){
+
+  var id = req.body.id; 
+
+  var tags = req.body.tags;
+  if(tags && tags.length){
+      tags = tags.split(',');
+  }
+  else {
+      tags = []; 
+  }
+
+  var payload = {
+    "tags": tags,
+    "date_modified": new Date().getTime(),
+    "notes": req.body.notes,
+    "deleted": false
+  }
+
+  var id = req.body.id;
+  var callback = getCallback('Link Updated!', res);
+  db.merge(id, payload, callback);
+
+})
+
+app.get('/delete', function(req, res){
+  var query = req.query;
+  var id = query.id;
+  var callback = getCallback('Link Deleted!', res);
+  db.merge(id, {"deleted": true, "date_modified": new Date().getTime()}, callback);
+});
+
+function upload_image(path){
+
+  var deferred = q.defer();
+
+  request(path, {encoding: null}, function(err, res, body) {
+
+    if(!err && res.statusCode == 200) {
+
+      var path = res.request.path;
+      if(path.indexOf('/') !== -1){
+        var parts = path.split('/');
+        path = parts[parts.length - 1];
+      }
+      var date = new Date();
+      path = '/' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + path;
+
+      var req = client.put(path, {
+        'Content-Type': res.headers['content-type'],
+        'Content-Length': res.headers['content-length']
+      });
+
+      req.on('response', function(res) {
+        if(res.statusCode === 200){
+          var s3Url = res.socket._httpMessage.url;
+          deferred.resolve(s3Url);
+        }
+        else {
+          deferred.reject(res);
+        }
+      });
+
+      req.end(body);
+    }
+  });
+
+  return deferred.promise;
+
+}
 
 function getCallback(message, response){
   return function(er, ok){
