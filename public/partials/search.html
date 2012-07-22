@@ -2,11 +2,11 @@
 
 <ul id="links">
   <li class="clearfix" ng:repeat="link in links">
-    <a href="{{link.value | uri}}" target="_blank">{{link.value.title}}</a>
+    <a href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
     <div class="date">{{link.value | date}}</div>
-    <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri}}</a>
+    <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri | truncate:145 }}</a>
     <div class="tags clearfix">
-      <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag}}</a> 
+      <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
     </div>
     <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="link.value.notes"></div>
   </li>
