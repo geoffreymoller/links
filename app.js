@@ -4,9 +4,15 @@
  */
 
 var express = require('express')
+  , sys = require('util')
   , routes = require('./routes')
-  , port;
+  , cradle = require('cradle')
+  , port
+  , connection = new(cradle.Connection)('https://geoffreymoller.cloudant.com', 443, {
+        auth: { username: process.env.DB_API_KEY, password: process.env.DB_API_SECRET }
+    });
 
+var db = connection.database('collect');
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -33,6 +39,27 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+
+app.get('/getURIByKey', function(req, res){
+  var query = req.query;
+  var URI = query.URI;
+  var callback = getCallback('Link Retrieved!', res);
+  db.view('uri/uriPlain', {key: URI}, callback)
+});
+
+function getCallback(message, response){
+  return function(er, ok){
+    if (er) {
+      response.send(er);
+      throw new Error(JSON.stringify(er));
+    }
+    else{
+      sys.puts(message);
+      sys.puts(ok);
+      response.send(ok);
+    }
+  }
+}
 
 port = process.env.PORT || port;
 app.listen(port);
