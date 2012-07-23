@@ -25,7 +25,7 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   var uri;
 
   if(tag && tag !== 'all'){
-    $scope.pageName += ': ' + tag;
+    $scope.pageTag = tag;
     uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
   }
   else {
