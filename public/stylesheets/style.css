@@ -34,6 +34,7 @@ ul#links {
 ul#links li {
   border-top: 1px solid #ccc;
   padding: 5px 0 20px 5px;
+  position: relative;
 }
 
 ul#links li a {
@@ -74,4 +75,11 @@ div.notes {
 
 div.notes.active {
   max-height: inherit;
+}
+
+span.delete {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }

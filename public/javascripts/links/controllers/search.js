@@ -32,6 +32,11 @@ var SearchController = function($scope, $http, $location, $routeParams) {
     uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
   }
   
+  $scope.handleDelete = function(link){
+    var id = link.id;
+    var promise = $http.get('/delete?id=' + id);
+  }
+
   var promise = $.getJSON(uri);
   promise.success(function(data){
     $scope.$apply(function () {

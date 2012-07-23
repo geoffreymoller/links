@@ -2,6 +2,7 @@
 
 <ul id="links">
   <li class="clearfix" ng:repeat="link in links">
+    <span ng-click="handleDelete(link)" class="delete">[x]</span>
     <a href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
     <div class="date">{{link.value | date}}</div>
     <a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri | truncate:145 }}</a>
