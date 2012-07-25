@@ -31,7 +31,13 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   else {
     uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
   }
-  
+
+  $(document).on('keypress', function(e){
+    if(e.keyCode === 47){
+      $('#search').focus();
+    }
+  });
+
   var promise = $.getJSON(uri);
   promise.success(function(data){
     $scope.$apply(function () {
