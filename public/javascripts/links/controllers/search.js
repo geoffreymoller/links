@@ -1,4 +1,6 @@
 var SearchController = function($scope, $http, $location, $routeParams) {
+  //TODO - helpers to services
+  //TODO - tests
 
   var collection = new Backbone.Collection();
   collection.comparator = function(link){
@@ -31,7 +33,21 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   else {
     uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
   }
-  
+
+  //TODO - ui-keypress
+  $(document).on('keypress', function(e){
+    if(e.keyCode === 47){
+      e.preventDefault();
+      $('#search').focus().val('');
+    }
+  });
+
+  //TODO - inject location
+  var location = $location;
+  $scope.fireSearch = function(search){
+    location.path('/search/' + search);
+  }
+
   var promise = $.getJSON(uri);
   promise.success(function(data){
     $scope.$apply(function () {
