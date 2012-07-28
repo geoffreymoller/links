@@ -43,6 +43,10 @@ ul#links {
   margin-top: 20px;
 }
 
+ul#links img {
+  max-height: 100px;
+}
+
 ul#links li {
   border-top: 1px solid #ccc;
   padding: 5px 0 20px 5px;

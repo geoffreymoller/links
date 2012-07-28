@@ -10,17 +10,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   $scope.pageName = 'Collect';
   $scope.pageLength = 5; 
 
-  $scope.active = null; 
-  $scope.notesClick = function(){
-    if($scope.active === this.$index){
-      $scope.active = null; 
-    }
-    else {
-      $scope.active = this.$index;
-    }
-  }
-  $scope.notesClass = 'notes';
-
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
   var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
@@ -73,6 +62,26 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
     });
   });
+
+  $scope.active = null; 
+  $scope.notesClick = function(){
+    if($scope.active === this.$index){
+      $scope.active = null; 
+    }
+    else {
+      $scope.active = this.$index;
+    }
+  }
+  $scope.notesClass = 'notes';
+
+  $scope.isImage = function(link){
+    var uri = link.value.URI || link.value.uri;
+    console.log(link);
+    console.log(uri);
+    console.log(uri.search(/png|jpg|jpeg|gif$/) > -1);
+    return uri.search(/png|jpg|jpeg|gif$/) > -1;
+  }
+
 
 }
 
