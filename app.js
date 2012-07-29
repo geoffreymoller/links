@@ -68,10 +68,11 @@ app.post('/save', function(req, res){
   }
 
   function _save(path, autoTags){
+
     var payload = {
         title: body.title,
         URI: path,
-        notes: body.notes,
+        notes: body.notes.match(/\S/) ? body.notes : null ,
         date: new Date().getTime()
     }
 

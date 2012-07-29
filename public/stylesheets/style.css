@@ -18,6 +18,18 @@ body {
   text-decoration: none; 
 }
 
+h1, form {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+form {
+  float: right;
+}
+form input[type="text"] {
+  height: 25px;
+}
+
 ul, li {
   margin: 0;
   padding: 0;
@@ -29,6 +41,10 @@ li {
 
 ul#links {
   margin-top: 20px;
+}
+
+ul#links img {
+  max-height: 100px;
 }
 
 ul#links li {

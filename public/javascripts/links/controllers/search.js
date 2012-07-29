@@ -1,4 +1,6 @@
 var SearchController = function($scope, $http, $location, $routeParams) {
+  //TODO - helpers to services
+  //TODO - tests
 
   var collection = new Backbone.Collection();
   collection.comparator = function(link){
@@ -7,17 +9,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
   $scope.pageName = 'Collect';
   $scope.pageLength = 5; 
-
-  $scope.active = null; 
-  $scope.notesClick = function(){
-    if($scope.active === this.$index){
-      $scope.active = null; 
-    }
-    else {
-      $scope.active = this.$index;
-    }
-  }
-  $scope.notesClass = 'notes';
 
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
@@ -35,6 +26,20 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   $scope.handleDelete = function(link){
     var id = link.id;
     var promise = $http.get('/delete?id=' + id);
+  }
+
+  //TODO - ui-keypress
+  $(document).on('keypress', function(e){
+    if(e.keyCode === 47){
+      e.preventDefault();
+      $('#search').focus().val('');
+    }
+  });
+
+  //TODO - inject location
+  var location = $location;
+  $scope.fireSearch = function(search){
+    location.path('/search/' + search);
   }
 
   var promise = $.getJSON(uri);
@@ -62,6 +67,26 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
     });
   });
+
+  $scope.active = null; 
+  $scope.notesClick = function(){
+    if($scope.active === this.$index){
+      $scope.active = null; 
+    }
+    else {
+      $scope.active = this.$index;
+    }
+  }
+  $scope.notesClass = 'notes';
+
+  $scope.isImage = function(link){
+    var uri = link.value.URI || link.value.uri;
+    console.log(link);
+    console.log(uri);
+    console.log(uri.search(/png|jpg|jpeg|gif$/) > -1);
+    return uri.search(/png|jpg|jpeg|gif$/) > -1;
+  }
+
 
 }
 
