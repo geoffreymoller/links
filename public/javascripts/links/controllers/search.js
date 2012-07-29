@@ -22,6 +22,21 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   else {
     uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
   }
+  
+  $scope.handleDelete = function(link){
+    var id = link.id;
+    var rev = link.value.rev;
+    if(confirm('Are you sure you want to delete the link?')){
+      var promise = $http.get('/delete?id=' + id + '&rev=' + rev);
+      promise.success(function(){
+        alert('Link was deleted!');
+        window.location.reload();
+      });
+      promise.success(function(){
+        alert('ERROR DELETING LINK!');
+      });
+    }
+  }
 
   //TODO - ui-keypress
   $(document).on('keypress', function(e){
@@ -76,9 +91,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
   $scope.isImage = function(link){
     var uri = link.value.URI || link.value.uri;
-    console.log(link);
-    console.log(uri);
-    console.log(uri.search(/png|jpg|jpeg|gif$/) > -1);
     return uri.search(/png|jpg|jpeg|gif$/) > -1;
   }
 
