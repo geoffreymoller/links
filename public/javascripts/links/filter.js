@@ -33,4 +33,11 @@ angular.module('links.filter', []).
         return String(text).substring(0, length-end.length) + end;
       }
     };
-  });
+  }).
+  filter('videoEmbedUrl', function () {
+    return function (uri) {
+      var id = uri.split('?')[1];
+      id = qs.parse(id).v;
+      return 'http://www.youtube.com/embed/' + id + '?hd=1';
+    };
+  })

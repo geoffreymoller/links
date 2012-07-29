@@ -5,8 +5,7 @@
     <span ng-click="handleDelete(link)" class="delete">[x]</span>
     <a href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
     <div class="date">{{link.value | date}}</div>
-    <a class="link" href="{{link.value | uri}}" target="_blank" ng-show="!isImage(link)">{{link.value | uri | truncate:145 }}</a>
-    <a class="link" href="{{link.value | uri}}" target="_blank" ng-show="isImage(link)"><img src="{{ link.value | uri }}"></img></a>
+    <ng-include src="linkMediaUrl(link)"></ng-include>
     <div class="tags clearfix">
       <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
     </div>
