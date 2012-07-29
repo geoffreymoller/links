@@ -121,8 +121,9 @@ app.post('/update', function(req, res){
 app.get('/delete', function(req, res){
   var query = req.query;
   var id = query.id;
+  var rev = query.rev;
   var callback = getCallback('Link Deleted!', res);
-  db.merge(id, {"deleted": true, "date_modified": new Date().getTime()}, callback);
+  db.remove(id, rev, callback); 
 });
 
 function upload_image(path){
