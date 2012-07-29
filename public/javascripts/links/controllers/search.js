@@ -10,19 +10,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   $scope.pageName = 'Collect';
   $scope.pageLength = 5; 
 
-  $scope.linkMediaUrl = function(link){
-    var uri = link.value.URI || link.value.uri;
-    if(uri.search(/png|jpg|jpeg|gif$/) > -1){
-      return 'partials/media/image.html'; 
-    }
-    else if(uri.indexOf('http://www.youtube.com/watch') === 0){
-      return 'partials/media/video.html'; 
-    }
-    else {
-      return 'partials/media/link.html'; 
-    }
-  }
-
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
   var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
@@ -36,6 +23,32 @@ var SearchController = function($scope, $http, $location, $routeParams) {
     uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
   }
   
+  var promise = $.getJSON(uri);
+  promise.success(function(data){
+    $scope.$apply(function () {
+
+      _.each(data.rows, function(link, index){
+        collection.add(link);
+      });
+
+      var p = new pagination(page, $scope.pageLength);
+      $scope.count = collection.length;
+      $scope.links = collection.toJSON().slice(p.start, p.end + 1);
+
+      p.paint(collection.length, function(index){
+        var location = window.location;
+        var hash = location.hash.replace(/\d.*/, index);
+        var suffix = hash.split('/').length === 3 ? '/' + index : '';
+        window.location.href = location.origin + '/' + hash + suffix;
+      });
+
+      if(!($scope.count > $scope.pageLength)){
+        $('.pagination').hide();
+      }
+
+    });
+  });
+
   $scope.handleDelete = function(link){
     var id = link.id;
     var rev = link.value.rev;
@@ -65,31 +78,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
     location.path('/search/' + search);
   }
 
-  var promise = $.getJSON(uri);
-  promise.success(function(data){
-    $scope.$apply(function () {
-
-      _.each(data.rows, function(link, index){
-        collection.add(link);
-      });
-
-      var p = new pagination(page, $scope.pageLength);
-      $scope.count = collection.length;
-      $scope.links = collection.toJSON().slice(p.start, p.end + 1);
-
-      p.paint(collection.length, function(index){
-        var location = window.location;
-        var hash = location.hash.replace(/\d.*/, index);
-        var suffix = hash.split('/').length === 3 ? '/' + index : '';
-        window.location.href = location.origin + '/' + hash + suffix;
-      });
-
-      if(!($scope.count > $scope.pageLength)){
-        $('.pagination').hide();
-      }
-
-    });
-  });
 
   $scope.active = null; 
   $scope.notesClick = function(){
@@ -101,6 +89,19 @@ var SearchController = function($scope, $http, $location, $routeParams) {
     }
   }
   $scope.notesClass = 'notes';
+
+  $scope.linkMediaUrl = function(link){
+    var uri = link.value.URI || link.value.uri;
+    if(uri.search(/png|jpg|jpeg|gif$/) > -1){
+      return 'partials/media/image.html'; 
+    }
+    else if(uri.indexOf('http://www.youtube.com/watch') === 0){
+      return 'partials/media/video.html'; 
+    }
+    else {
+      return 'partials/media/link.html'; 
+    }
+  }
 
 }
 

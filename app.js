@@ -7,12 +7,20 @@ var express = require('express')
   , sys = require('util')
   , routes = require('./routes')
   , cradle = require('cradle')
-  , port
+  , request = require('request')
   , uuid = require('node-uuid')
-  , connection = new(cradle.Connection)('https://geoffreymoller.cloudant.com', 443, {
-        auth: { username: process.env.DB_API_KEY, password: process.env.DB_API_SECRET }
-    });
+  , knox = require('knox')
+  , q = require('q')
+  , port
 
+var client = knox.createClient({
+  key: process.env.AMAZON_KEY
+  , secret:  process.env.AMAZON_SECRET
+  , bucket: 'geoffreymoller-collect'
+});
+var connection = new(cradle.Connection)('https://geoffreymoller.cloudant.com', 443, {
+  auth: { username: process.env.DB_API_KEY, password: process.env.DB_API_SECRET }
+})
 var db = connection.database('collect');
 var app = module.exports = express.createServer();
 
