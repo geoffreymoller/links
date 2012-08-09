@@ -1,4 +1,5 @@
-var SearchController = function($scope, $http, $location, $routeParams) {
+var SearchController = function($scope, $http, $location, $routeParams, $data) {
+
   //TODO - helpers to services
   //TODO - tests
 
@@ -12,22 +13,15 @@ var SearchController = function($scope, $http, $location, $routeParams) {
 
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
-  var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
-  var uri;
+  $data.get(tag, callback);
 
-  if(tag && tag !== 'all'){
-    $scope.pageTag = tag;
-    uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
-  }
-  else {
-    uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
-  }
-  
-  var promise = $.getJSON(uri);
-  promise.success(function(data){
-    $scope.$apply(function () {
+  function callback(data){
 
-      _.each(data.rows, function(link, index){
+    $scope.$apply(function() {
+
+      console.time('callback');
+
+      _.each(data, function(link, index){
         collection.add(link);
       });
 
@@ -46,8 +40,10 @@ var SearchController = function($scope, $http, $location, $routeParams) {
         $('.pagination').hide();
       }
 
+      console.timeEnd('callback');
+
     });
-  });
+  };
 
   $scope.handleDelete = function(link){
     var id = link.id;
@@ -104,4 +100,6 @@ var SearchController = function($scope, $http, $location, $routeParams) {
   }
 
 }
+
+SearchController.$inject = ['$scope', '$http', '$location', '$routeParams', '$data'];
 
