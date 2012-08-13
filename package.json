@@ -19,6 +19,6 @@
   }
  , "scripts" :
   { 
-    "test" : "mocha"
+    "test" : "mocha --reporter list"
   }
 }
