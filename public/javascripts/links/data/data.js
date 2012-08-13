@@ -6,42 +6,60 @@ angular.module('links.data', [])
 
     return {
 
-      get: function(tag, callback){
+      filter: function(rows, filters){
 
-        console.time('get');
+        if(filters.length){
+          _.each(filters, function(filter){
+            rows = _.reject(rows, function(row){
+              return _.find(row.value.tags, function(tag){
+                return tag === filter;
+              });
+            });
+          });
+        } 
+
+        return rows;
+
+      }
+
+      , get: function(tag, callback){
+
+        var self = this;
         var tags, uri;
         var recordSet = [];
         var promises = [];
+        var filters = [];
 
         tags = tag.split(',');
+        var all = tag === "all"; 
 
-        if(!tag){
+        if(!tag || all){
           uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
           promises.push($.getJSON(uri));
         }
         else {
           //get each tag from couch until cloudant instance supports "keys" param
           _.each(tags, function(tag){
-            uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
-            promises.push($.getJSON(uri));
+            if(tag[0] === '-'){
+              filters.push(tag.replace('-', ''));
+            }
+            else {
+              uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
+              promises.push($.getJSON(uri));
+            }
           });
         }
 
-        console.time('foo');
         _.each(promises, function(promise){
           promise.success(function(data){
+            data.rows = self.filter(data.rows, filters);
             recordSet = recordSet.concat(data.rows);
           });
         });
-        console.timeEnd('foo');
 
-        console.time('bar');
         $.when.apply(null, promises).done(function(){
-          console.log(recordSet);
           callback(recordSet);
         });
-        console.timeEnd('bar');
-        console.timeEnd('get');
 
       }
 
