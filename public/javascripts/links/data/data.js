@@ -6,17 +6,36 @@ angular.module('links.data', [])
 
     return {
 
-      filter: function(rows, filters){
+      filter: function(rows, tags, filters){
 
-        if(filters.length){
-          _.each(filters, function(filter){
-            rows = _.reject(rows, function(row){
-              return _.find(row.value.tags, function(tag){
-                return tag === filter;
+        _.each(rows, function(row, index){
+
+          var proceed = true;
+
+          if(tags && tags.length && tags.length > 1){
+            var found = true; 
+            _.each(tags, function(searchTag){
+              found = found && _.find(row.value.tags, function(tag){
+                return tag === searchTag;
               });
             });
+
+            if(found) { return };
+            delete rows[index];
+            var proceed = false;
+          }
+
+          if(proceed && filters && filters.length){
+          _.each(filters, function(filter){
+            if(_.find(row.value.tags, function(tag){
+              return tag === filter;
+            })){
+              delete rows[index];
+            };
           });
-        } 
+          }
+
+        });
 
         return rows;
 
@@ -52,7 +71,7 @@ angular.module('links.data', [])
 
         _.each(promises, function(promise){
           promise.success(function(data){
-            data.rows = self.filter(data.rows, filters);
+            data.rows = self.filter(data.rows, tags, filters);
             recordSet = recordSet.concat(data.rows);
           });
         });
