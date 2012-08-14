@@ -1,3 +1,4 @@
+
 var pagination = function(page, pageLength){
 
     this.paint = function(collectionLength, callback){
@@ -31,4 +32,3 @@ var pagination = function(page, pageLength){
 
 }
 
-module.exports.pagination = pagination;

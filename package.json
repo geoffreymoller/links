@@ -19,6 +19,6 @@
   }
  , "scripts" :
   { 
-    "test" : "mocha --reporter list"
+    "test" : "testacular config.js"
   }
 }

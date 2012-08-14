@@ -1,3 +1,3 @@
 test:
-	./node_modules/.bin/mocha --reporter list 
+	./node_modules/.bin/testacular config.js
 .PHONY: test
