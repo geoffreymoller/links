@@ -19,6 +19,6 @@
   }
  , "scripts" :
   { 
-    "test" : "testacular config.js"
+    "test" : "./node_modules/.bin/testacular config.js"
   }
 }
