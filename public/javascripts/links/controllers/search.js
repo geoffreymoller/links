@@ -12,6 +12,8 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
   $scope.pageLength = 5; 
 
   var tag = $routeParams.tag;
+  $scope.search = tag;
+
   var page = +$routeParams.page;
   $data.get(tag, callback);
 
