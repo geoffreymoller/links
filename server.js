@@ -61,8 +61,9 @@ app.post('/save', function(req, res){
   var body = req.body;
   var uri = body.uri;
   var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
+  var saveImage = body.saveImage === 'true'; 
 
-  if(!isImage){
+  if(!isImage || (isImage && !saveImage)){
     _save(uri);
   }
   else {
