@@ -63,8 +63,11 @@ app.post('/save', function(req, res){
   var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
   var saveImage = body.saveImage === 'true'; 
 
-  if(!isImage || (isImage && !saveImage)){
+  if(!isImage){
     _save(uri);
+  }
+  else if(isImage && !saveImage){
+    _save(uri, ['img']);
   }
   else {
     var deferred = upload_image(uri);
