@@ -35,6 +35,15 @@ ul, li {
   padding: 0;
 }
 
+#no-results {
+  margin-top: 50px;
+  text-align: center;
+}
+
+#no-results img {
+  margin: 0 auto;
+}
+
 li {
   list-style-type: none;
 }

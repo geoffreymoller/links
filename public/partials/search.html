@@ -1,5 +1,7 @@
 <ng-include src="'partials/header.html'"></ng-include>
 
+<div id="no-results" ng:show="(count == 0)"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/6/18/Bglnq.jpg"/></div>
+
 <ul id="links">
   <li class="clearfix" ng:repeat="link in links">
     <span ng-click="handleDelete(link)" class="delete">[x]</span>
