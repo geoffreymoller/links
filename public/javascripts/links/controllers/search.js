@@ -48,15 +48,15 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
   };
 
   $scope.handleDelete = function(link){
-    var id = link.id;
-    var rev = link.value.rev;
+    var id = link.value._id;
+    var rev = link.value._rev;
     if(confirm('Are you sure you want to delete the link?')){
       var promise = $http.get('/delete?id=' + id + '&rev=' + rev);
       promise.success(function(){
-        alert('Link was deleted!');
+        //TODO - success alert/dialog
         window.location.reload();
       });
-      promise.success(function(){
+      promise.error(function(){
         alert('ERROR DELETING LINK!');
       });
     }
