@@ -89,7 +89,9 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
   $scope.notesClass = 'notes';
 
   $scope.linkMediaUrl = function(link){
+    //support hacked (qs) image uris for now
     var uri = link.value.URI || link.value.uri;
+    uri = uri.split('?')[0];
     if(uri.search(/png|jpg|jpeg|gif$/) > -1){
       return 'partials/media/image.html'; 
     }
