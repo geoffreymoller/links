@@ -13,7 +13,7 @@ files = [
 
   'public/javascripts/links/pagination.js',
   'public/javascripts/vendor/expect.js',
-  'test/test.js'
+  'test/*.js'
 
 ];
 
