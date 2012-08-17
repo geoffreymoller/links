@@ -7,35 +7,36 @@ angular.module('links.data', [])
     return {
 
       filter: function(rows, ands, nots){
-        _.each(rows, _.bind(function(row, index){
-          this.filterAnd(rows, index, row, ands);
-          this.filterNot(rows, index, row, nots);
-        }, this));
+        rows =  _.filter(rows, function(row){
+          return this.filterAnd(row, ands);
+        }, this);
+        //rows =  _.filter(rows, function(row){
+          //return this.filterNot(row, nots);
+        //}, this);
         return rows;
       }
 
-      , filterAnd: function(rows, index, row, ands){
-        if(ands && ands.length && ands.length > 1){
-          var found = true; 
-          _.each(ands, function(searchAnd){
-            found = found && _.find(row.value.tags, function(tag){
-              return tag === searchAnd;
-            });
+      , filterAnd: function(row, ands){
+        var found = true; 
+        _.each(ands, function(searchAnd){
+          found = found && !!_.find(row.value.tags, function(tag){
+            return tag === searchAnd;
           });
-          if(found) { return };
-          delete rows[index];
-        }
+        });
+        return found;
       }
 
-      , filterNot: function(rows, index, row, nots){
+      , filterNot: function(row, nots){
         if(nots && nots.length){
-        _.each(nots, function(not){
-          if(_.find(row.value.tags, function(tag){
-            return tag === not;
-          })){
-            delete rows[index];
-          };
-        });
+          var found = false;
+          _.each(nots, function(not){
+            if(_.find(row.value.tags, function(tag){
+              return tag === not;
+            })){
+              found = true;
+            };
+          });
+          return !found;
         }
       }
 
@@ -66,6 +67,7 @@ angular.module('links.data', [])
           //get each tag from couch until cloudant instance supports "keys" param
           _.each(tags, function(tag){
             uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
+            console.log('uri: ' + uri);
             promises.push($.getJSON(uri));
           });
         }
@@ -78,7 +80,8 @@ angular.module('links.data', [])
         });
 
         $.when.apply(null, promises).done(function(){
-          callback(recordSet);
+          console.log(recordSet);
+          //callback(recordSet);
         });
 
       }
