@@ -80,8 +80,7 @@ angular.module('links.data', [])
         });
 
         $.when.apply(null, promises).done(function(){
-          console.log(recordSet);
-          //callback(recordSet);
+          callback(recordSet);
         });
 
       }
