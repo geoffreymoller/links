@@ -7,13 +7,15 @@ angular.module('links.data', [])
     return {
 
       filter: function(rows, ands, nots){
-        rows =  _.filter(rows, function(row){
+        rows = this.filterNots(rows, nots); 
+        rows = this.filterAnds(rows, ands); 
+        return rows;
+      }
+
+      , filterAnds: function(rows, ands){
+        return  _.filter(rows, function(row){
           return this.filterAnd(row, ands);
         }, this);
-        //rows =  _.filter(rows, function(row){
-          //return this.filterNot(row, nots);
-        //}, this);
-        return rows;
       }
 
       , filterAnd: function(row, ands){
@@ -26,19 +28,23 @@ angular.module('links.data', [])
         return found;
       }
 
-      , filterNot: function(row, nots){
-        if(nots && nots.length){
-          var found = false;
-          _.each(nots, function(not){
-            if(_.find(row.value.tags, function(tag){
-              return tag === not;
-            })){
-              found = true;
-            };
-          });
-          return !found;
-        }
+      , filterNots: function(rows, nots){
+        return _.filter(rows, function(row){
+          return this.filterNot(row, nots);
+        }, this);
       }
+
+      , filterNot: function(row, nots){
+        var found = false;
+        _.each(nots, function(not){
+          if(_.find(row.value.tags, function(tag){
+            return tag === not;
+          })){
+            found = true;
+          };  
+        }); 
+        return !found;
+      } 
 
       , get: function(tag, callback){
 
