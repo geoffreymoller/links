@@ -3,9 +3,9 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
   //TODO - helpers to services
   //TODO - tests
 
-  var collection = new Backbone.Collection();
-  collection.comparator = function(link){
-    return -link.get('value').date;
+  var collection = [];
+  function comparator(a, b){
+    return b.value.date - a.value.date;
   }
 
   $scope.pageName = 'Collect';
@@ -21,15 +21,13 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
 
     $scope.$apply(function() {
 
-      console.time('callback');
-
       _.each(data, function(link, index){
-        collection.add(link);
+        goog.array.binaryInsert(collection, link, comparator); 
       });
 
       var p = new pagination(page, $scope.pageLength);
       $scope.count = collection.length;
-      $scope.links = collection.toJSON().slice(p.start, p.end + 1);
+      $scope.links = collection.slice(p.start, p.end + 1);
 
       p.paint(collection.length, function(index){
         var location = window.location;
@@ -41,8 +39,6 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
       if(!($scope.count > $scope.pageLength)){
         $('.pagination').hide();
       }
-
-      console.timeEnd('callback');
 
     });
   };

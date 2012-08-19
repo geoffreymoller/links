@@ -8,9 +8,9 @@ describe('pagination', function(){
     });
 
     it('returns proper indexes for a pagination component instantiated with no page parameter', function(){
-      expect(p.page).to.equal(0);
-      expect(p.start).to.equal(0);
-      expect(p.end).to.equal(9);
+      expect(p.page).toEqual(0);
+      expect(p.start).toEqual(0);
+      expect(p.end).toEqual(9);
     })
 
   });
@@ -23,9 +23,9 @@ describe('pagination', function(){
     });
 
     it('returns proper indexes for a pagination component instantiated as the first page', function(){
-      expect(p.page).to.equal(0);
-      expect(p.start).to.equal(0);
-      expect(p.end).to.equal(9);
+      expect(p.page).toEqual(0);
+      expect(p.start).toEqual(0);
+      expect(p.end).toEqual(9);
     })
 
   });
@@ -38,9 +38,9 @@ describe('pagination', function(){
     });
 
     it('returns proper indexes for a pagination component instantiated as the second page', function(){
-      expect(p.page).to.equal(1);
-      expect(p.start).to.equal(10);
-      expect(p.end).to.equal(19);
+      expect(p.page).toEqual(1);
+      expect(p.start).toEqual(10);
+      expect(p.end).toEqual(19);
     })
 
   })

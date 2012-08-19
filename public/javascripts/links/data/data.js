@@ -7,37 +7,44 @@ angular.module('links.data', [])
     return {
 
       filter: function(rows, ands, nots){
-        _.each(rows, _.bind(function(row, index){
-          this.filterAnd(rows, index, row, ands);
-          this.filterNot(rows, index, row, nots);
-        }, this));
+        rows = this.filterNots(rows, nots); 
+        rows = this.filterAnds(rows, ands); 
         return rows;
       }
 
-      , filterAnd: function(rows, index, row, ands){
-        if(ands && ands.length && ands.length > 1){
-          var found = true; 
-          _.each(ands, function(searchAnd){
-            found = found && _.find(row.value.tags, function(tag){
-              return tag === searchAnd;
-            });
-          });
-          if(found) { return };
-          delete rows[index];
-        }
+      , filterAnds: function(rows, ands){
+        return  _.filter(rows, function(row){
+          return this.filterAnd(row, ands);
+        }, this);
       }
 
-      , filterNot: function(rows, index, row, nots){
-        if(nots && nots.length){
+      , filterAnd: function(row, ands){
+        var found = true; 
+        _.each(ands, function(searchAnd){
+          found = found && !!_.find(row.value.tags, function(tag){
+            return tag === searchAnd;
+          });
+        });
+        return found;
+      }
+
+      , filterNots: function(rows, nots){
+        return _.filter(rows, function(row){
+          return this.filterNot(row, nots);
+        }, this);
+      }
+
+      , filterNot: function(row, nots){
+        var found = true;
         _.each(nots, function(not){
           if(_.find(row.value.tags, function(tag){
             return tag === not;
           })){
-            delete rows[index];
-          };
-        });
-        }
-      }
+            found = false;
+          };  
+        }); 
+        return found;
+      } 
 
       , get: function(tag, callback){
 
@@ -50,7 +57,7 @@ angular.module('links.data', [])
         function containsDash(str){
           return str[0] === '-';
         } 
-        tags = tag.split(',');
+        tags = tag ? tag.split(',') : [];
         ands = _.reject(tags, containsDash); 
         nots = _.filter(tags, containsDash); 
         nots = _.map(nots, function(not){
@@ -66,6 +73,7 @@ angular.module('links.data', [])
           //get each tag from couch until cloudant instance supports "keys" param
           _.each(tags, function(tag){
             uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
+            console.log('uri: ' + uri);
             promises.push($.getJSON(uri));
           });
         }
