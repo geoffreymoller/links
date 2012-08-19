@@ -57,7 +57,7 @@ angular.module('links.data', [])
         function containsDash(str){
           return str[0] === '-';
         } 
-        tags = tag.split(',');
+        tags = tag ? tag.split(',') : [];
         ands = _.reject(tags, containsDash); 
         nots = _.filter(tags, containsDash); 
         nots = _.map(nots, function(not){
