@@ -25,7 +25,9 @@ describe('services', function(){
     });
 
     it('filters a rowset via ANDs and NOTs', function(){
-      var result = data.filter(rows, ['d3', 'javascript'], []); 
+      var result = data.filter(rows, [], []); 
+      expect(result.length).toEqual(3);
+      result = data.filter(rows, ['d3', 'javascript'], []); 
       expect(result.length).toEqual(1);
       result = data.filter(rows, [], ['d3']); 
       expect(result.length).toEqual(1);
@@ -34,7 +36,9 @@ describe('services', function(){
     });
 
     it('filters a rowset via ANDs', function(){
-      var result = data.filterAnds(rows, ['d3']); 
+      var result = data.filterAnds(rows, []); 
+      expect(result.length).toEqual(3);
+      result = data.filterAnds(rows, ['d3']); 
       expect(result.length).toEqual(2);
       result = data.filterAnds(rows, ['d3','javascript']); 
       expect(result.length).toEqual(1);
@@ -43,7 +47,9 @@ describe('services', function(){
     });
 
     it('filters a rowset via NOTS', function(){
-      var result = data.filterNots(rows, ['d3']); 
+      var result = data.filterNots(rows, []); 
+      expect(result.length).toEqual(3);
+      result = data.filterNots(rows, ['d3']); 
       expect(result.length).toEqual(1);
       result = data.filterNots(rows, ['d3', 'javascript']); 
       expect(result.length).toEqual(0);
@@ -52,7 +58,9 @@ describe('services', function(){
     });
 
     it('filters a row via AND', function(){
-      var found = data.filterAnd(rows[0], ['d3']); 
+      var found = data.filterAnd(rows[0], []); 
+      expect(found).toEqual(true);
+      found = data.filterAnd(rows[0], ['d3']); 
       expect(found).toEqual(true);
       found = data.filterAnd(rows[1], ['javascript']); 
       expect(found).toEqual(true);
@@ -63,7 +71,9 @@ describe('services', function(){
     });
 
     it('filters a row via NOT', function(){
-      var found = data.filterNot(rows[0], ['javascript']); 
+      var found = data.filterNot(rows[0], []); 
+      expect(found).toEqual(true);
+      found = data.filterNot(rows[0], ['javascript']); 
       expect(found).toEqual(true);
       found = data.filterNot(rows[0], ['d3']); 
       expect(found).toEqual(false);

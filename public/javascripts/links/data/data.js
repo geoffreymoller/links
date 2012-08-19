@@ -35,15 +35,15 @@ angular.module('links.data', [])
       }
 
       , filterNot: function(row, nots){
-        var found = false;
+        var found = true;
         _.each(nots, function(not){
           if(_.find(row.value.tags, function(tag){
             return tag === not;
           })){
-            found = true;
+            found = false;
           };  
         }); 
-        return !found;
+        return found;
       } 
 
       , get: function(tag, callback){
