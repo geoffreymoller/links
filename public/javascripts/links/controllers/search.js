@@ -1,4 +1,4 @@
-var SearchController = function($scope, $http, $location, $routeParams, $data) {
+var SearchController = function($scope, $http, $location, $routeParams, $data, $ui) {
 
   //TODO - helpers to services
   //TODO - tests
@@ -16,6 +16,7 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
 
   var page = +$routeParams.page;
   $data.get(tag, callback);
+  $ui.paint($scope);
 
   function callback(data){
 
@@ -101,5 +102,5 @@ var SearchController = function($scope, $http, $location, $routeParams, $data) {
 
 }
 
-SearchController.$inject = ['$scope', '$http', '$location', '$routeParams', '$data'];
+SearchController.$inject = ['$scope', '$http', '$location', '$routeParams', '$data', '$ui'];
 

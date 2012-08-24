@@ -87,6 +87,22 @@ ul#links div.tags a {
   padding: 3px;
 }
 
+ul#links.images li {
+  float: left;
+  height: 150px;
+  margin-right: 5px;
+  width: 300px;
+}
+
+ul#links.images li a {
+  display: none;
+}
+
+ul#links.images li a.image,
+ul#links.images li div.date {
+  display: block;
+}
+
 div.notes {
   box-shadow: 0 0 3px #888;
   color: #666;
