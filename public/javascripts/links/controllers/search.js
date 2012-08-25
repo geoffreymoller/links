@@ -5,11 +5,12 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   var collection = [];
   var tag = $routeParams.tag;
+  var page = +$routeParams.page;
+
   $rootScope.pageName = 'Collect';
   $rootScope.pageLength = 5; 
   $rootScope.search = tag;
 
-  var page = +$routeParams.page;
   $data.get(tag, callback);
   $ui.paint($scope);
 
