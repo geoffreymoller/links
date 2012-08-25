@@ -94,7 +94,8 @@ ul#links.images li {
   width: 300px;
 }
 
-ul#links.images li a {
+ul#links.images li a,
+ul#links.images li div.notes {
   display: none;
 }
 
