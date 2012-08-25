@@ -35,7 +35,7 @@ ul, li {
   padding: 0;
 }
 
-#no-results {
+.notifier {
   margin-top: 50px;
   text-align: center;
 }

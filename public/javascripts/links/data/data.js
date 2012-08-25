@@ -1,6 +1,6 @@
 angular.module('links.data', [])
 
-  .factory('$data', function(){
+  .factory('$data', ['$rootScope', function(rootScope){
 
     var baseURI = 'https://geoffreymoller.cloudant.com/collect/_design/';
 
@@ -86,6 +86,7 @@ angular.module('links.data', [])
         });
 
         $.when.apply(null, promises).done(function(){
+          rootScope.loaded = true; 
           callback(recordSet);
         });
 
@@ -93,4 +94,5 @@ angular.module('links.data', [])
 
     }
 
-  });
+  }]);
+
