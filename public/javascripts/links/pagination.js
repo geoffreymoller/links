@@ -1,9 +1,11 @@
 
-var pagination = function(pageLength, page){
+angular.module('links.pagination', [])
 
-    this.pageLength = pageLength;
+  .factory('$pagination', ['$rootScope', function(rootScope){
 
-    this.paint = function(collectionLength, callback){
+    return {
+  
+      paint: function(collectionLength, callback){
       
         function pageSelectCallback(index){
             callback(index);
@@ -20,19 +22,28 @@ var pagination = function(pageLength, page){
           });
         }
 
+      }
+
+      , seed: function(pageLength, page){
+
+        this.pageLength = pageLength;
+        this.page = page ? page - 1 : 0;
+        this.start = this.page * this.pageLength;
+        var end = this.pageLength - 1;
+        if(this.page === 0){
+            this.end = end; 
+        }
+        else {
+            this.end = this.start + end; 
+        }
+
+      }
+
     }
 
-    this.seed = function(page){
-      this.page = page ? page - 1 : 0;
-      this.start = this.page * this.pageLength;
-      var end = this.pageLength - 1;
-      if(this.page === 0){
-          this.end = end; 
-      }
-      else {
-          this.end = this.start + end; 
-      }
-    }
 
-}
+
+  }]);
+
+
 

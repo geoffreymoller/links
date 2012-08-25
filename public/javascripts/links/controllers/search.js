@@ -1,4 +1,4 @@
-var SearchController = function($scope, $rootScope, $http, $location, $routeParams, $data, $ui) {
+var SearchController = function($scope, $rootScope, $http, $location, $routeParams, $data, $ui, $pagination) {
 
   //TODO - helpers to services
   //TODO - tests
@@ -23,15 +23,14 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
         goog.array.binaryInsert(collection, link, $data.comparator); 
       });
 
-      var p = new pagination($scope.pageLength);
-      p.seed(page);
+      $pagination.seed($scope.pageLength, page);
       $scope.count = collection.length;
-      $scope.updateLinks(p);
+      $scope.updateLinks($pagination);
 
-      p.paint(collection.length, function(index){
+      $pagination.paint(collection.length, function(index){
         $scope.$apply(function(){
-          p.seed(index);
-          $scope.updateLinks(p);
+          $pagination.seed($scope.pageLength, index);
+          $scope.updateLinks($pagination);
         });
       });
 
@@ -42,8 +41,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
   };
 
-  $scope.updateLinks = function(p){
-    $scope.links = collection.slice(p.start, p.end + 1);
+  $scope.updateLinks = function($pagination){
+    //debugger;
+    $scope.links = collection.slice($pagination.start, $pagination.end + 1);
   };
 
   $scope.handleDelete = function(link){
@@ -103,5 +103,5 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
 }
 
-SearchController.$inject = ['$scope', '$rootScope', '$http', '$location', '$routeParams', '$data', '$ui'];
+SearchController.$inject = ['$scope', '$rootScope', '$http', '$location', '$routeParams', '$data', '$ui', '$pagination'];
 

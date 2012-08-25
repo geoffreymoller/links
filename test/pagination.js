@@ -1,13 +1,18 @@
-describe('pagination', function(){
+describe('Pagination', function(){
 
-  describe('No page parameter', function(){
+  beforeEach(module('links.pagination'));
 
-    var p;
-    beforeEach(function(){
-      p = new pagination(null, 10);
+  var p;
+  beforeEach(function(){
+    inject(function($injector) {
+      p = $injector.get('$pagination');
     });
+  });
+
+  describe('component', function(){
 
     it('returns proper indexes for a pagination component instantiated with no page parameter', function(){
+      p.seed(10, null);
       expect(p.page).toEqual(0);
       expect(p.start).toEqual(0);
       expect(p.end).toEqual(9);
@@ -15,14 +20,10 @@ describe('pagination', function(){
 
   });
 
-  describe('1st page', function(){
-
-    var p;
-    beforeEach(function(){
-      p = new pagination(1, 10);
-    });
+  describe('component', function(){
 
     it('returns proper indexes for a pagination component instantiated as the first page', function(){
+      p.seed(10, 1);
       expect(p.page).toEqual(0);
       expect(p.start).toEqual(0);
       expect(p.end).toEqual(9);
@@ -30,17 +31,36 @@ describe('pagination', function(){
 
   });
 
-  describe('2nd page', function(){
-
-    var p;
-    beforeEach(function(){
-      p = new pagination(2, 10);
-    });
+  describe('component', function(){
 
     it('returns proper indexes for a pagination component instantiated as the second page', function(){
+      p.seed(10, 2);
       expect(p.page).toEqual(1);
       expect(p.start).toEqual(10);
       expect(p.end).toEqual(19);
+    })
+
+  })
+
+  describe('component', function(){
+
+    it('returns proper indexes and updates state across multiple pagination calls', function(){
+      p.seed(10, null);
+      expect(p.page).toEqual(0);
+      expect(p.start).toEqual(0);
+      expect(p.end).toEqual(9);
+      p.seed(10, 1);
+      expect(p.page).toEqual(0);
+      expect(p.start).toEqual(0);
+      expect(p.end).toEqual(9);
+      p.seed(10, 2);
+      expect(p.page).toEqual(1);
+      expect(p.start).toEqual(10);
+      expect(p.end).toEqual(19);
+      p.seed(10, null);
+      expect(p.page).toEqual(0);
+      expect(p.start).toEqual(0);
+      expect(p.end).toEqual(9);
     })
 
   })
