@@ -3,11 +3,14 @@ angular.module('links.ui', [])
   .factory('$ui', ['$rootScope', function(rootScope){
 
     return {
-      paint: function($scope){
+      paint: function(){
         rootScope.loaded = false;
-        if($scope.search.indexOf('img') !== -1){
-          $scope.listType = 'images';
-          $scope.pageLength = 15; 
+        if(rootScope.search.indexOf('img') !== -1){
+          rootScope.listType = 'images';
+          rootScope.pageLength = 6; 
+        }
+        else {
+          delete rootScope.listType;
         }
       } 
     }
