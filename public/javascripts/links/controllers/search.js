@@ -4,6 +4,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   //TODO - tests
 
   var collection = [];
+  var location = $location;
   var tag = $routeParams.tag;
   var page = +$routeParams.page;
 
@@ -22,15 +23,16 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
         goog.array.binaryInsert(collection, link, $data.comparator); 
       });
 
-      var p = new pagination(page, $scope.pageLength);
+      var p = new pagination($scope.pageLength);
+      p.seed(page);
       $scope.count = collection.length;
-      $scope.links = collection.slice(p.start, p.end + 1);
+      $scope.updateLinks(p);
 
       p.paint(collection.length, function(index){
-        var location = window.location;
-        var hash = location.hash.replace(/\d.*/, index);
-        var suffix = hash.split('/').length === 3 ? '/' + index : '';
-        window.location.href = location.origin + '/' + hash + suffix;
+        $scope.$apply(function(){
+          p.seed(index);
+          $scope.updateLinks(p);
+        });
       });
 
       if(!($scope.count > $scope.pageLength)){
@@ -38,6 +40,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       }
 
     });
+  };
+
+  $scope.updateLinks = function(p){
+    $scope.links = collection.slice(p.start, p.end + 1);
   };
 
   $scope.handleDelete = function(link){
@@ -63,7 +69,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
   });
 
-  //TODO - inject location
   var location = $location;
   $scope.fireSearch = function(search){
     location.path('/search/' + search);

@@ -1,5 +1,7 @@
 
-var pagination = function(page, pageLength){
+var pagination = function(pageLength, page){
+
+    this.pageLength = pageLength;
 
     this.paint = function(collectionLength, callback){
       
@@ -8,26 +10,28 @@ var pagination = function(page, pageLength){
             return false;
         }
 
-        if(collectionLength > pageLength){
+        if(collectionLength > this.pageLength){
           $('.pagination').pagination({
             onClick: _.bind(pageSelectCallback, this)
             , currentPage: this.page + 1
             , items: collectionLength
-            , itemsOnPage: pageLength
+            , itemsOnPage: this.pageLength
             , cssStyle: 'compact-theme'
           });
         }
 
     }
 
-    this.page = page ? page - 1 : 0;
-    this.start = this.page * pageLength;
-    var end = pageLength - 1;
-    if(this.page === 0){
-        this.end = end; 
-    }
-    else {
-        this.end = this.start + end; 
+    this.seed = function(page){
+      this.page = page ? page - 1 : 0;
+      this.start = this.page * this.pageLength;
+      var end = this.pageLength - 1;
+      if(this.page === 0){
+          this.end = end; 
+      }
+      else {
+          this.end = this.start + end; 
+      }
     }
 
 }
