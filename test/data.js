@@ -1,6 +1,36 @@
 describe('services', function(){
 
-  describe('data', function(){
+  describe('data.comparator', function(){
+
+    var data;
+
+    var a = { value: { date: 1000 } };
+    var b = { value: { date: 999 } };
+
+    beforeEach(module('links.data'));
+
+    beforeEach(function(){
+      inject(function($injector) {
+        data = $injector.get('$data');
+      });
+    });
+
+    it('compares the link dates correctly', function(){
+      var result = data.comparator(a, b);
+      expect(result).toEqual(-1);
+      a.value.date = 999;
+      b.value.date = 1000;
+      result = data.comparator(a, b);
+      expect(result).toEqual(1);
+      a.value.date = 1000;
+      b.value.date = 1000;
+      result = data.comparator(a, b);
+      expect(result).toEqual(0);
+    });
+
+  });
+
+  describe('data.filter', function(){
 
     var data;
     var rows;
