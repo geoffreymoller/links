@@ -6,7 +6,11 @@ angular.module('links.data', [])
 
     return {
 
-      filter: function(rows, ands, nots){
+      comparator: function(a, b){
+        return b.value.date - a.value.date;
+      }
+
+      , filter: function(rows, ands, nots){
         rows = this.filterNots(rows, nots); 
         rows = this.filterAnds(rows, ands); 
         return rows;

@@ -4,10 +4,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   //TODO - tests
 
   var collection = [];
-  function comparator(a, b){
-    return b.value.date - a.value.date;
-  }
-
   var tag = $routeParams.tag;
   $rootScope.pageName = 'Collect';
   $rootScope.pageLength = 5; 
@@ -22,7 +18,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     $scope.$apply(function() {
 
       _.each(data, function(link, index){
-        goog.array.binaryInsert(collection, link, comparator); 
+        goog.array.binaryInsert(collection, link, $data.comparator); 
       });
 
       var p = new pagination(page, $scope.pageLength);
