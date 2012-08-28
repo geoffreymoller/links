@@ -34,10 +34,16 @@ angular.module('links.filter', []).
       }
     };
   }).
-  filter('videoEmbedUrl', function () {
+  filter('youTubeEmbedUrl', function () {
     return function (uri) {
       var id = uri.split('?')[1];
       id = qs.parse(id).v;
       return 'http://www.youtube.com/embed/' + id + '?hd=1';
+    };
+  }).
+  filter('vimeoEmbedUrl', function () {
+    return function (uri) {
+      var id = uri.split('vimeo.com/')[1];
+      return 'http://player.vimeo.com/video/' + id;
     };
   })

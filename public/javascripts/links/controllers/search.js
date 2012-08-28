@@ -96,6 +96,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     else if(uri.indexOf('http://www.youtube.com/watch') === 0){
       return 'partials/media/video.html'; 
     }
+    else if(uri.indexOf('vimeo') != -1){
+      return 'partials/media/vimeo.html'; 
+    }
     else {
       return 'partials/media/link.html'; 
     }
