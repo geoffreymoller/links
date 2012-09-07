@@ -55,7 +55,7 @@ angular.module('links.data', [])
         var self = this;
         var tags, uri;
         var recordSet = [];
-        var promises = [];
+        var promise;
         var ands = [], nots = [];
 
         function containsDash(str){
@@ -71,25 +71,22 @@ angular.module('links.data', [])
         var all = tag === "all"; 
         if(!tag || all){
           uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
-          promises.push($.getJSON(uri));
+          promise = $.getJSON(uri);
         }
         else {
-          //get each tag from couch until cloudant instance supports "keys" param
+          var keys = [];
+          uri = baseURI + 'tags/_view/tags?descending=true&keys='
           _.each(tags, function(tag){
-            uri = baseURI + 'tags/_view/tags?descending=true&key="' + tag + '"&callback=?';
-            console.log('uri: ' + uri);
-            promises.push($.getJSON(uri));
+            keys.push(tag);
           });
+          uri += encodeURIComponent(JSON.stringify(keys));
+          uri += '&callback=?';
+          promise = $.getJSON(uri);
         }
 
-        _.each(promises, function(promise){
-          promise.success(function(data){
-            data.rows = self.filter(data.rows, ands, nots);
-            recordSet = recordSet.concat(data.rows);
-          });
-        });
-
-        $.when.apply(null, promises).done(function(){
+        promise.success(function(data){
+          data.rows = self.filter(data.rows, ands, nots);
+          recordSet = recordSet.concat(data.rows);
           rootScope.loaded = true; 
           callback(recordSet);
         });
