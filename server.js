@@ -36,7 +36,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  port = 3000;
+  port = 1972;
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
