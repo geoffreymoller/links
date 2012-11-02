@@ -5,14 +5,33 @@
 
 <ul id="links" class="{{listType}}">
   <li class="clearfix" ng:repeat="link in links">
-    <span ng-click="handleDelete(link)" class="delete">[x]</span>
-    <a class="title" href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
-    <div class="date">{{link.value | date}}</div>
-    <ng-include src="linkMediaUrl(link)"></ng-include>
-    <div class="tags clearfix">
+    <span ng:show="!link.edit" ng-click="handleEdit(link)" class="edit">[edit]</span>
+    <div ng:show="link.edit">
+      <span ng-click="handleSave(link)" class="save">[save]</span>
+      <span ng-click="handleCancel(link)" class="cancel">[cancel]</span>
+    </div>
+    <span ng-click="handleDelete(link)" class="delete">[delete]</span>
+
+    <a ng:show="!link.edit" class="title" href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
+    <div ng:show="link.edit"><input type="text" ng:model="link.value.title" /></div>
+
+    <div ng:show="!link.edit" class="date">Created: {{link.value | date}}</div>
+
+    <ng-include ng:show="!link.edit" src="linkMediaUrl(link)"></ng-include>
+    <div ng:show="link.edit"><label ng:show="link.edit" ng:model="link.value.uri">{{link.value.uri}}</label></div>
+
+    <div ng:show="!link.edit" class="tags clearfix">
       <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
     </div>
-    <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="link.value.notes"></div>
+    <div ng:show="link.edit">
+      <input type="text" 
+             ng:model="link.value.tags" 
+      />
+    </div>
+
+    <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
+    <div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>
+
   </li>
 </ul>
 

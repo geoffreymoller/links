@@ -41,9 +41,43 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
   };
 
+  $scope.getTags = function(link){
+    return link.value.tags.join(' '); 
+  };
+
   $scope.updateLinks = function($pagination){
-    //debugger;
     $scope.links = collection.slice($pagination.start, $pagination.end + 1);
+  };
+
+  $scope.handleEdit = function(link){
+    link.edit = true;
+  };
+
+  $scope.handleSave = function(link){
+    link = link
+    if(typeof link.value.tags === 'string'){
+      link.value.tags = link.value.tags.split(',');
+    }
+    var params = {
+      id: link.id   
+      , title: link.value.title   
+      , tags: link.value.tags.join()
+      , notes: link.value.notes   
+    };
+
+    var promise = $http.post('/update', params);
+    promise.success(function(){
+      //TODO - success message
+      link.edit = false;
+    });
+    promise.error(function(){
+      alert('ERROR SAVING LINK!');
+    });
+
+  };
+
+  $scope.handleCancel = function(link){
+    link.edit = false;
   };
 
   $scope.handleDelete = function(link){
