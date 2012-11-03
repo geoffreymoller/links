@@ -53,8 +53,16 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     link.edit = true;
   };
 
+  $scope.handleCancel = function(link){
+    if(typeof link.value.tags === 'string'){
+      link.value.tags = link.value.tags.split(',');
+    }
+    $scope.datas = angular.copy($scope.initial);
+    link.edit = false;
+  };
+
   $scope.handleSave = function(link){
-    link = link
+    var link = link
     if(typeof link.value.tags === 'string'){
       link.value.tags = link.value.tags.split(',');
     }
@@ -74,10 +82,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       alert('ERROR SAVING LINK!');
     });
 
-  };
-
-  $scope.handleCancel = function(link){
-    link.edit = false;
   };
 
   $scope.handleDelete = function(link){
