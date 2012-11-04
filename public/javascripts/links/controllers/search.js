@@ -101,7 +101,17 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   //TODO - ui-keypress
   $(document).on('keypress', function(e){
-    if(e.keyCode === 47){
+    var target = $(e.target);
+    var node = target[0];
+    var inputEnter = e.keyCode === 13 && target[0].nodeName === "INPUT";
+    var textAreaShiftEnter = e.keyCode === 13 && e.shiftKey; 
+    if(inputEnter || textAreaShiftEnter){
+      target.parents('li').find('.save').trigger('click');
+    }
+    else if(node.nodeName === "TEXTAREA" || node.nodeName === "INPUT"){
+      return;
+    }
+    else if(e.keyCode === 47){
       e.preventDefault();
       $('#search').focus().val('');
     }
