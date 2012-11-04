@@ -9,9 +9,9 @@ files = [
 
   'public/javascripts/vendor/underscore-min.js',
 
-  'public/javascripts/vendor/angular/angular-1.0.0.js',
-  'public/javascripts/vendor/angular/angular-resource-1.0.1.min.js',
-  'public/javascripts/vendor/angular/angular-mocks-1.0.1.js',
+  'public/javascripts/vendor/angular/angular.min.js',
+  'public/javascripts/vendor/angular/angular-resource.min.js',
+  'public/javascripts/vendor/angular/angular-mocks.js',
 
   'public/javascripts/links/pagination.js',
   'public/javascripts/links/data/data.js',
