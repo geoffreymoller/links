@@ -1,7 +1,6 @@
 var SearchController = function($scope, $rootScope, $http, $location, $routeParams, $data, $ui, $pagination) {
 
-  //TODO - helpers to services
-  //TODO - tests
+  //TODO - more tests
 
   var collection = [];
   var location = $location;
@@ -14,6 +13,18 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $data.get(tag, callback);
   $ui.paint($scope);
+
+  $(document).on('keydown', function(e){
+    $ui.keydown(e);
+  });
+
+  var location = $location;
+  $scope.fireSearch = function(search){
+    location.path('/search/' + search);
+  }
+
+  $scope.mode = 'view';
+  $scope.selectedItem = 0;
 
   function callback(data){
 
@@ -51,6 +62,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $scope.handleEdit = function(link){
     link.edit = true;
+    $scope.selectedItem = this.$index;
   };
 
   $scope.handleCancel = function(link){
@@ -58,11 +70,12 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       link.value.tags = link.value.tags.split(',');
     }
     $scope.datas = angular.copy($scope.initial);
+    $scope.mode = 'view'
     link.edit = false;
   };
 
   $scope.handleSave = function(link){
-    var link = link
+    var link = link || $scope.links[$scope.selectedItem];
     if(typeof link.value.tags === 'string'){
       link.value.tags = link.value.tags.split(',');
     }
@@ -77,6 +90,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     promise.success(function(){
       //TODO - success message
       link.edit = false;
+      $scope.mode = 'view';
     });
     promise.error(function(){
       alert('ERROR SAVING LINK!');
@@ -99,40 +113,81 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
   }
 
-  //TODO - ui-keypress
-  $(document).on('keypress', function(e){
-    var target = $(e.target);
-    var node = target[0];
-    var inputEnter = e.keyCode === 13 && target[0].nodeName === "INPUT";
-    var textAreaShiftEnter = e.keyCode === 13 && e.shiftKey; 
-    if(inputEnter || textAreaShiftEnter){
-      target.parents('li').find('.save').trigger('click');
-    }
-    else if(node.nodeName === "TEXTAREA" || node.nodeName === "INPUT"){
-      return;
-    }
-    else if(e.keyCode === 47){
-      e.preventDefault();
-      $('#search').focus().val('');
-    }
-  });
-
-  var location = $location;
-  $scope.fireSearch = function(search){
-    location.path('/search/' + search);
-  }
-
-
-  $scope.active = null; 
+  $scope.itemClass = 'clearfix';
+  $scope.notesClass = 'notes';
+  $scope.selectedNote = null; 
   $scope.notesClick = function(){
-    if($scope.active === this.$index){
-      $scope.active = null; 
+    if($scope.selectedNote === this.$index){
+      $scope.selectedNote = null; 
     }
     else {
-      $scope.active = this.$index;
+      $scope.selectedNote = this.$index;
     }
   }
-  $scope.notesClass = 'notes';
+
+  $scope.$on('vim', function(event, keyCode) {
+    if($scope.mode === 'edit') return;
+    $scope.handleVim(event, keyCode);
+  });
+  $scope.$on('esc', function(event, keyCode) {
+    $scope.$apply(function() {
+      $scope.links[$scope.selectedItem].edit = false;
+      $scope.mode = 'view'
+    });
+  });
+  $scope.$on('enter', function(e, originalEvent) {
+    if(originalEvent.shiftKey){
+      if($scope.mode === 'edit' && originalEvent.target.nodeName === 'INPUT'){
+        originalEvent.preventDefault();
+        $scope.handleSave();
+      }
+      else {
+        $scope.$apply(function() {
+          $scope.links[$scope.selectedItem].edit = true;
+          $scope.mode = 'edit'
+        });
+      }
+    }
+    else {
+      if($scope.mode === 'view'){
+        if($scope.selectedNote === $scope.selectedItem){
+          $scope.$apply(function() {
+            $scope.selectedNote = null; 
+          });
+        }
+        else {
+          $scope.$apply(function() {
+            $scope.selectedNote = $scope.selectedItem;
+          });
+        }
+      }
+    }
+  });
+  $scope.handleVim = function(event, keyCode){
+    $scope.selectedNote = null; 
+    var up = keyCode === 75;
+    if(up){
+      if($scope.selectedItem === 0){
+        return;
+      }
+      else {
+        $scope.$apply(function() {
+          $scope.selectedItem--;
+        });
+      }
+    }
+    else {
+      if($scope.selectedItem === $scope.pageLength - 1){
+        return;
+      }
+      else {
+        $scope.$apply(function() {
+          $scope.selectedItem++;
+        });
+      }
+    }
+  }
+
 
   $scope.linkMediaUrl = function(link){
     //support hacked (qs) image uris for now
