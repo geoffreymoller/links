@@ -1,5 +1,5 @@
 test:
-	./node_modules/.bin/testacular config.js
+	./node_modules/.bin/testacular start testacular.conf.js 
 testAll:
-	./node_modules/.bin/testacular --browsers='Chrome','Safari','Firefox','Opera','PhantomJS' config.js
+	./node_modules/.bin/testacular start --browsers='Chrome','Safari','Firefox','Opera','PhantomJS' testacular.conf.js 
 .PHONY: test

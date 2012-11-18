@@ -23,6 +23,6 @@
   }
  , "scripts" :
   { 
-    "test" : "./node_modules/.bin/testacular config.js"
+    "test" : "./node_modules/.bin/testacular start testacular.conf.js" 
   }
 }

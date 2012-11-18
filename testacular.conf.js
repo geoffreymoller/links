@@ -46,7 +46,7 @@ autoWatch = false;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = [];
+browsers = ['PhantomJS'];
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit
