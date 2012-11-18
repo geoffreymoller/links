@@ -14,10 +14,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   $data.get(tag, callback);
   $ui.paint($scope);
 
-  $(document).on('keydown', function(e){
-    $ui.keydown(e);
-  });
-
   var location = $location;
   $scope.fireSearch = function(search){
     location.path('/search/' + search);
@@ -125,6 +121,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
   }
 
+  $scope.$on('keydown', function(event, originalEvent) {
+    $ui.keydown(originalEvent);
+  });
   $scope.$on('vim', function(event, keyCode) {
     if($scope.mode === 'edit') return;
     $scope.handleVim(event, keyCode);

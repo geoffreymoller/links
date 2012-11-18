@@ -12,7 +12,11 @@ angular.module('links', ['links.filter', 'links.data', 'links.ui', 'links.pagina
     controller: VizController
   }).
   otherwise({redirectTo: '/search/'});
-})
+}).run(function($rootScope){
+  $(document).on('keydown', function(e){
+    $rootScope.$broadcast('keydown', e);
+  });
+});
 
 var VizController = function($scope) {
   $scope.page = 'Viz';

@@ -15,7 +15,9 @@ angular.module('links.ui', [])
       } 
       , keydown: function(e){
         if(e.keyCode === 74 || e.keyCode === 75){
-          $rootScope.$broadcast('vim', e.keyCode);
+          if($(e.target).attr('id') !== 'search'){
+            $rootScope.$broadcast('vim', e.keyCode);
+          }
         }
         else if(e.keyCode === 27){
           $rootScope.$broadcast('esc');
