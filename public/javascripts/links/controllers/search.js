@@ -136,7 +136,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
   });
   $scope.$on('enter', function(e, originalEvent) {
-    if($scope.mode === 'edit' && originalEvent.target.nodeName === 'INPUT'){
+    if($scope.mode === 'edit' && 
+      (originalEvent.shiftKey ||
+      originalEvent.target.nodeName === 'INPUT')){
+      originalEvent.preventDefault();
       $scope.handleSave();
     }
     else {
