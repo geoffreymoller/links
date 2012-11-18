@@ -123,13 +123,13 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   }
 
 
-  $scope.active = null; 
+  $scope.activeNote = null; 
   $scope.notesClick = function(){
-    if($scope.active === this.$index){
-      $scope.active = null; 
+    if($scope.activeNote === this.$index){
+      $scope.activeNote = null; 
     }
     else {
-      $scope.active = this.$index;
+      $scope.activeNote = this.$index;
     }
   }
   $scope.notesClass = 'notes';
