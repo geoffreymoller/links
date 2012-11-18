@@ -4,7 +4,7 @@
 <div class="notifier" ng:show="!loaded"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/7/10/funny-gifs-steven-seagals-epic-run.gif"/></div>
 
 <ul id="links" class="{{listType}}">
-  <li class="clearfix" ng:repeat="link in links">
+  <li class="{{itemClass | selectedItem}}" ng:repeat="link in links">
     <span ng:show="!link.edit" ng-click="handleEdit(link)" class="edit">[edit]</span>
     <div ng:show="link.edit">
       <span ng-click="handleSave(link)" class="save">[save]</span>

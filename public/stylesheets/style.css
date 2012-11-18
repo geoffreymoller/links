@@ -58,8 +58,12 @@ ul#links img {
 
 ul#links li {
   border-top: 1px solid #ccc;
-  padding: 5px 0 20px 5px;
+  padding: 5px 8px 20px 8px;
   position: relative;
+}
+
+ul#links li.selected {
+  background: #e8f1fd;
 }
 
 ul#links li a {
