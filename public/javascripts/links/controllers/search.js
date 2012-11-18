@@ -136,21 +136,35 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
   });
   $scope.$on('enter', function(e, originalEvent) {
-    if($scope.mode === 'edit' && 
-      (originalEvent.shiftKey ||
-      originalEvent.target.nodeName === 'INPUT')){
-      originalEvent.preventDefault();
-      $scope.handleSave();
+    if(originalEvent.shiftKey){
+      if($scope.mode === 'edit' && originalEvent.target.nodeName === 'INPUT'){
+        originalEvent.preventDefault();
+        $scope.handleSave();
+      }
+      else {
+        $scope.$apply(function() {
+          $scope.links[$scope.selectedItem].edit = true;
+          $scope.mode = 'edit'
+        });
+      }
     }
     else {
-      $scope.$apply(function() {
-        $scope.links[$scope.selectedItem].edit = true;
-        $scope.mode = 'edit'
-      });
+      if($scope.mode === 'view'){
+        if($scope.selectedNote === $scope.selectedItem){
+          $scope.$apply(function() {
+            $scope.selectedNote = null; 
+          });
+        }
+        else {
+          $scope.$apply(function() {
+            $scope.selectedNote = $scope.selectedItem;
+          });
+        }
+      }
     }
   });
-
   $scope.handleVim = function(event, keyCode){
+    $scope.selectedNote = null; 
     var up = keyCode === 75;
     if(up){
       if($scope.selectedItem === 0){
