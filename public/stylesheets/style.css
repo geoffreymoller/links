@@ -127,7 +127,7 @@ div.notes {
   padding: 10px;
 }
 
-div.notes.active {
+div.notes.selected {
   max-height: inherit;
 }
 

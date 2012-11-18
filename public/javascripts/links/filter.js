@@ -12,8 +12,8 @@ angular.module('links.filter', []).
   }).
   filter('selectedNote', function() {
     return function(value) {
-      if(this.$index === this.activeNote){
-        value += ' active';
+      if(this.$index === this.selectedNote){
+        value += ' selected';
       } 
       return value; 
     }
