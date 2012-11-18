@@ -121,8 +121,24 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
   }
 
+  //TODO - factor out common event patterns/restrictions
   $scope.$on('keydown', function(event, originalEvent) {
     $ui.keydown(originalEvent);
+  });
+  $scope.$on('pagination', function(event, direction) {
+    if($scope.mode === 'edit') return;
+    var node = direction ? '.next' : '.prev';
+    node = $('.pagination ' + node);
+    node.length && node.trigger('click');
+    $scope.selectedItem = 0;
+  });
+  $scope.$on('edit', function(event, originalEvent) {
+    if($scope.mode === 'edit') return;
+    if(originalEvent.target.nodeName === 'INPUT') return;
+    $scope.$apply(function() {
+      $scope.links[$scope.selectedItem].edit = true;
+      $scope.mode = 'edit';
+    });
   });
   $scope.$on('vim', function(event, keyCode) {
     if($scope.mode === 'edit') return;
@@ -134,9 +150,16 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       $scope.mode = 'view'
     });
   });
+  $scope.$on('follow', function(scope, event) {
+    if($scope.mode === 'edit') return;
+    if(event.target.nodeName === 'INPUT') return;
+    var links = scope.currentScope.links;
+    var link = links[$scope.selectedItem];
+    window.open(link.value.URI);
+  });
   $scope.$on('enter', function(e, originalEvent) {
     if(originalEvent.shiftKey){
-      if($scope.mode === 'edit' && originalEvent.target.nodeName === 'INPUT'){
+      if($scope.mode === 'edit'){
         originalEvent.preventDefault();
         $scope.handleSave();
       }
@@ -159,6 +182,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
             $scope.selectedNote = $scope.selectedItem;
           });
         }
+      }
+      else if(originalEvent.target.nodeName === 'INPUT'){ 
+        originalEvent.preventDefault();
+        $scope.handleSave();
       }
     }
   });
