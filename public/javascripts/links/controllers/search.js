@@ -144,6 +144,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     $scope.$apply(function() {
       $scope.links[$scope.selectedItem].edit = true;
       $scope.mode = 'edit';
+      //HORRORZ - TODO - use a directive else find the node
+      _.defer(function(){
+        $('input.tags:visible')[0].focus();
+      });
     });
   });
   $scope.$on('vim', function(event, keyCode) {
