@@ -109,6 +109,12 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
   }
 
+  $scope.blur = function(){
+    _.defer(function(){
+      document.activeElement.blur()
+    });
+  }
+
   $scope.itemClass = 'clearfix';
   $scope.notesClass = 'notes';
   $scope.selectedNote = null; 
@@ -149,6 +155,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       $scope.links[$scope.selectedItem].edit = false;
       $scope.mode = 'view'
     });
+    $scope.blur();
   });
   $scope.$on('follow', function(scope, event) {
     if($scope.mode === 'edit') return;
@@ -188,6 +195,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
         $scope.handleSave();
       }
     }
+    $scope.blur();
   });
   $scope.handleVim = function(event, keyCode){
     $scope.selectedNote = null; 
