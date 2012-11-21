@@ -55,6 +55,9 @@ ul#links {
 ul#links img {
   max-height: 100px;
 }
+ul#links img.video {
+  max-height: 180px;
+}
 
 ul#links li {
   border-top: 1px solid #ccc;
