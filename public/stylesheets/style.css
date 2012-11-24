@@ -125,6 +125,7 @@ div.notes {
   border: 1px solid #ccc;
   border-radius: 3px;
   margin-top: 10px;
+  padding-top: 10px;
   max-height: inherit;
 }
 
