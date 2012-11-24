@@ -19,8 +19,8 @@ angular.module('links.ui', [])
             $rootScope.$broadcast('vim', e.keyCode);
           }
         }
-        else if(e.keyCode === 37 || e.keyCode === 39){
-          $rootScope.$broadcast('pagination', e.keyCode === 37 ? 0 : 1);
+        else if(_.find([37, 39, 78, 80], function(num) { return num === e.keyCode })){
+          $rootScope.$broadcast('pagination', (e.keyCode === 37 || e.keyCode === 80) ? 0 : 1);
         }
         else if(e.keyCode === 69){
           $rootScope.$broadcast('edit', e);
