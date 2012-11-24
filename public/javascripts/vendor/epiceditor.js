@@ -445,8 +445,12 @@
     // Used to setup the initial size of the iframes
     function setupIframeStyles(el) {
       for (var x = 0; x < el.length; x++) {
-        el[x].style.width  = self.element.offsetWidth - widthDiff + 'px';
-        el[x].style.height = self.element.offsetHeight - heightDiff + 'px';
+        //TODO - unhack and reconcile width 
+        var _parent = $(self.element.parentElement);
+        var left = parseInt(_parent.css('padding-left'));
+        var right = parseInt(_parent.css('padding-right'));
+        el[x].style.width  = self.element.offsetWidth - (left + right) + 'px';
+        el[x].style.height = self.element.offsetHeight - 5 + 'px';
       }
     }
 
