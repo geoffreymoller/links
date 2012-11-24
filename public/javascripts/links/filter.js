@@ -10,10 +10,18 @@ angular.module('links.filter', []).
       return value.uri || value.URI;
     }
   }).
+  filter('selectedItem', function() {
+    return function(value) {
+      if(this.$index === this.selectedItem){
+        value += ' selected';
+      } 
+      return value;
+    }
+  }).
   filter('selectedNote', function() {
     return function(value) {
-      if(this.$index === this.active){
-        value += ' active';
+      if(this.$index === this.selectedNote){
+        value += ' selected';
       } 
       return value; 
     }
@@ -39,6 +47,16 @@ angular.module('links.filter', []).
       var id = uri.split('?')[1];
       id = qs.parse(id).v;
       return 'http://www.youtube.com/embed/' + id + '?hd=1';
+    };
+  }).
+  filter('youTubeThumbnail', function () {
+    return function (uri) {
+      var id = uri.split('?')[1];
+      id = qs.parse(id).v;
+      if(id.indexOf('#') !== -1){
+        id = id.split('#')[0];
+      }
+      return id; 
     };
   }).
   filter('vimeoEmbedUrl', function () {

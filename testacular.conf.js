@@ -1,34 +1,30 @@
+// Testacular configuration
+
 // base path, that will be used to resolve files and exclude
-basePath = '.'
+basePath = '';
 
 // list of files / patterns to load in the browser
 files = [
-
   JASMINE,
   JASMINE_ADAPTER,
-
   'public/javascripts/vendor/underscore-min.js',
-
   'public/javascripts/vendor/angular/angular.min.js',
   'public/javascripts/vendor/angular/angular-resource.min.js',
   'public/javascripts/vendor/angular/angular-mocks.js',
-
   'public/javascripts/links/pagination.js',
   'public/javascripts/links/data/data.js',
-
   'test/*.js'
-
 ];
 
 // list of files to exclude
 exclude = [];
 
-// use dots reporter, as travis terminal does not support escaping sequences
-// possible values: 'dots' || 'progress'
+// test results reporter to use
+// possible values: dots || progress
 reporter = 'progress';
 
 // web server port
-port = 9876;
+port = 8081;
 
 // cli runner port
 runnerPort = 9100;
@@ -38,10 +34,10 @@ colors = true;
 
 // level of logging
 // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-logLevel = LOG_INFO;
+logLevel = LOG_DEBUG;
 
 // enable / disable watching file and executing tests whenever any file changes
-autoWatch = true;
+autoWatch = false;
 
 // Start these browsers, currently available:
 // - Chrome
@@ -51,7 +47,7 @@ autoWatch = true;
 // - Safari
 // - PhantomJS
 browsers = ['PhantomJS'];
-//browsers = ['Chrome', 'Firefox', 'Opera', 'Safari', 'PhantomJS'];
 
-// Auto run tests on start (when browsers are captured) and exit
+// Continuous Integration mode
+// if true, it capture browsers, run tests and exit
 singleRun = true;

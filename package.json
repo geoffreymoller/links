@@ -17,8 +17,12 @@
     , "q": ">= 0.8.2"
     , "request": ">= 2.9.150"
   }
+  , "devDependencies": {
+      "grunt": ">= 0.3.11"
+      , "testacular": "0.2.0"
+  }
  , "scripts" :
   { 
-    "test" : "./node_modules/.bin/testacular config.js"
+    "test" : "./node_modules/.bin/testacular start testacular.conf.js" 
   }
 }
