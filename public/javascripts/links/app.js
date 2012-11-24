@@ -1,4 +1,4 @@
-angular.module('links', ['links.filter', 'links.data', 'links.ui', 'links.pagination'], function($routeProvider, $locationProvider){
+var app = angular.module('links', ['links.filter', 'links.data', 'links.ui', 'links.pagination'], function($routeProvider, $locationProvider){
   $routeProvider.when('/search/:tag', {
     templateUrl: 'partials/search.html',
     controller: SearchController
@@ -16,6 +16,42 @@ angular.module('links', ['links.filter', 'links.data', 'links.ui', 'links.pagina
   $(document).on('keydown', function(e){
     $rootScope.$broadcast('keydown', e);
   });
+});
+
+app.directive('notesEditor', function() {
+
+  return function(scope, element, attrs){
+    var node = $(element);
+    scope.link.editor = new EpicEditor({
+      container: node[0]
+      , focusOnLoad: true
+      , clientSideStorage: false
+      , file: {
+        name: 'epiceditor'
+        , defaultContent: scope.link.value.notes || ""
+        , autoSave: 100
+      }
+      , basePath: 'stylesheets'
+      , theme: {
+        base:'/themes/base/epiceditor.css',
+        preview:'/themes/preview/github.css',
+        editor:'/themes/preview/github.css'
+      }
+      , shortcut: {
+        modifier: 18
+        , fullscreen: 70
+        , preview: 80
+        , edit: 79
+      }
+    }).load().preview();
+
+    //TODO - disable/throttle per viewstate
+    scope.link.editor.on('save', function () {
+      scope.link.value.notes = scope.link.editor.getFiles()['epiceditor'].content;
+    });
+
+  };
+
 });
 
 var VizController = function($scope) {

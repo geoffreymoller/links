@@ -107,7 +107,6 @@ ul#links div.tags a {
 
 ul#links.images li {
   float: left;
-  height: 150px;
   margin-right: 5px;
   width: 300px;
 }
@@ -123,15 +122,10 @@ ul#links.images li div.date {
 }
 
 div.notes {
-  background: #f4f4f4;
   border: 1px solid #ccc;
-  color: #666;
-  cursor: pointer;
-  font-size: 12px;
+  border-radius: 3px;
   margin-top: 10px;
-  max-height: 40px;
-  overflow: scroll;
-  padding: 10px;
+  max-height: inherit;
 }
 
 div.notes.selected {

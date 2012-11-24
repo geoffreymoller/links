@@ -86,6 +86,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     promise.success(function(){
       //TODO - success message
       link.edit = false;
+      link.editor.preview();
       $scope.mode = 'view';
     });
     promise.error(function(){
@@ -119,6 +120,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   $scope.notesClass = 'notes';
   $scope.selectedNote = 0; 
   $scope.notesClick = function(){
+    debugger;
     if($scope.selectedNote === this.$index){
       $scope.selectedNote = null; 
     }
@@ -142,7 +144,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     if($scope.mode === 'edit') return;
     if(originalEvent.target.nodeName === 'INPUT') return;
     $scope.$apply(function() {
-      $scope.links[$scope.selectedItem].edit = true;
+      var link = $scope.links[$scope.selectedItem];
+      link.edit = true;
+      link.editor.edit();
       $scope.mode = 'edit';
       //HORRORZ - TODO - use a directive else find the node
       _.defer(function(){
@@ -156,7 +160,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   });
   $scope.$on('esc', function(event, keyCode) {
     $scope.$apply(function() {
-      $scope.links[$scope.selectedItem].edit = false;
+      var link = $scope.links[$scope.selectedItem];
+      link.edit = false;
+      link.editor.preview();
       $scope.mode = 'view'
     });
     $scope.blur();

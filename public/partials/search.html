@@ -3,7 +3,7 @@
 <div class="notifier" ng:show="loaded && (count == 0)"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/6/18/Bglnq.jpg"/></div>
 <div class="notifier" ng:show="!loaded"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/7/10/funny-gifs-steven-seagals-epic-run.gif"/></div>
 
-<ul id="links" class="{{listType}}">
+<ul id="links" class="{{listType}}"> 
   <li class="{{itemClass | selectedItem}}" ng:repeat="link in links">
     <span ng:show="!link.edit" ng-click="handleEdit(link)" class="edit">[edit]</span>
     <div ng:show="link.edit">
@@ -31,8 +31,9 @@
       />
     </div>
 
-    <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
-    <div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>
+    <!--<div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>-->
+    <!--<div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>-->
+    <div ng:show="link.value.notes || link.edit" ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" notes-editor></div>
 
   </li>
 </ul>
