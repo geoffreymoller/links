@@ -117,7 +117,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $scope.itemClass = 'clearfix';
   $scope.notesClass = 'notes';
-  $scope.selectedNote = null; 
+  $scope.selectedNote = 0; 
   $scope.notesClick = function(){
     if($scope.selectedNote === this.$index){
       $scope.selectedNote = null; 
