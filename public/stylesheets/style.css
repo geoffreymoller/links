@@ -107,6 +107,7 @@ ul#links div.tags a {
 
 ul#links.images li {
   float: left;
+  height: 150px;
   margin-right: 5px;
   width: 300px;
 }
@@ -122,15 +123,26 @@ ul#links.images li div.date {
 }
 
 div.notes {
+  height: 40px;
+  width: 920px;
+  background: #fff;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px;
   margin-top: 10px;
-  padding-top: 10px;
-  max-height: inherit;
+  overflow: scroll;
 }
 
 div.notes.selected {
-  max-height: inherit;
+}
+
+li.edit div.notes {
+  padding-top: 10px;
+}
+
+div.notes #epiceditor-utilbar {
+  border: 1px solid red;
 }
 
 div.notes pre {

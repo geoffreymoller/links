@@ -21,6 +21,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $scope.mode = 'view';
   $scope.selectedItem = 0;
+  $scope.editItem = null;
 
   function callback(data){
 
@@ -48,6 +49,11 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
   };
 
+  $scope.resize = function(dimensions, $node, editor){
+    editor.resize(dimensions);
+    $node.width(dimensions.w).height(dimensions.h);
+  }
+
   $scope.getTags = function(link){
     return link.value.tags.join(' '); 
   };
@@ -56,6 +62,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     $scope.links = collection.slice($pagination.start, $pagination.end + 1);
   };
 
+  //TODO
   $scope.handleEdit = function(link){
     link.edit = true;
     $scope.selectedItem = this.$index;
@@ -87,6 +94,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       //TODO - success message
       link.edit = false;
       link.editor.preview();
+      $scope.editItem = null;
       $scope.mode = 'view';
     });
     promise.error(function(){
@@ -120,7 +128,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   $scope.notesClass = 'notes';
   $scope.selectedNote = 0; 
   $scope.notesClick = function(){
-    debugger;
     if($scope.selectedNote === this.$index){
       $scope.selectedNote = null; 
     }
@@ -139,6 +146,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     node = $('.pagination ' + node);
     node.length && node.trigger('click');
     $scope.selectedItem = 0;
+    $scope.editItem = null;
   });
   $scope.$on('edit', function(event, originalEvent) {
     if($scope.mode === 'edit') return;
@@ -147,6 +155,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       var link = $scope.links[$scope.selectedItem];
       link.edit = true;
       link.editor.edit();
+      $scope.editItem = $scope.selectedItem; 
       $scope.mode = 'edit';
       //HORRORZ - TODO - use a directive else find the node
       _.defer(function(){
@@ -164,6 +173,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       link.edit = false;
       link.editor.preview();
       $scope.mode = 'view'
+      $scope.editItem = null;
     });
     $scope.blur();
   });
@@ -182,7 +192,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       }
       else {
         $scope.$apply(function() {
-          $scope.links[$scope.selectedItem].edit = true;
+          $scope.editItem = $scope.selectedItem; 
+          var link = $scope.links[$scope.selectedItem];
+          link.edit = true;
           $scope.mode = 'edit'
         });
       }

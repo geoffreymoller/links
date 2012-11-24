@@ -10,10 +10,13 @@ angular.module('links.filter', []).
       return value.uri || value.URI;
     }
   }).
-  filter('selectedItem', function() {
+  filter('itemViewState', function() {
     return function(value) {
       if(this.$index === this.selectedItem){
         value += ' selected';
+      } 
+      if(this.$index === this.editItem){
+        value += ' edit';
       } 
       return value;
     }

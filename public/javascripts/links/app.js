@@ -20,15 +20,15 @@ var app = angular.module('links', ['links.filter', 'links.data', 'links.ui', 'li
 
 app.directive('notesEditor', function() {
 
-  return function(scope, element, attrs){
-    var node = $(element);
-    scope.link.editor = new EpicEditor({
-      container: node[0]
+  return function($scope, element, attrs){
+    var $node = $(element);
+    $scope.link.editor = new EpicEditor({
+      container: $node[0]
       , focusOnLoad: true
       , clientSideStorage: false
       , file: {
         name: 'epiceditor'
-        , defaultContent: scope.link.value.notes || ""
+        , defaultContent: $scope.link.value.notes || ""
         , autoSave: 100
       }
       , basePath: 'stylesheets'
@@ -45,9 +45,13 @@ app.directive('notesEditor', function() {
       }
     }).load().preview();
 
+    //TODO - broadcast to consumer
+    var dimensions = {w: 920, h: 50};
+    $scope.$parent.resize(dimensions, $node, $scope.link.editor);  
+
     //TODO - disable/throttle per viewstate
-    scope.link.editor.on('save', function () {
-      scope.link.value.notes = scope.link.editor.getFiles()['epiceditor'].content;
+    $scope.link.editor.on('save', function () {
+      $scope.link.value.notes = $scope.link.editor.getFiles()['epiceditor'].content;
     });
 
   };
