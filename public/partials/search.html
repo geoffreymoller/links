@@ -34,6 +34,11 @@
     <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
     <div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>
 
+<jl-markdown>
+#Hello World
+- list item
+</jl-markdown>
+
   </li>
 </ul>
 

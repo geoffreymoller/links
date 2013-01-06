@@ -47,3 +47,48 @@ angular.module('links.ui', [])
 
   }])
 
+  .directive('jlMarkdown', function factory() {
+
+    var converter = new Showdown.converter();
+    var editTemplate = '<textarea rows="10 cols="10" ng-dblclick="switchToPreview()" ng-show="isEditMode" ng-model="markdown"></textarea>';
+    var previewTemplate = '<div ng-dblclick="switchToEdit()" ng-hide="isEditMode">Preview</div>';
+
+    return {
+
+      restrict: 'E'
+
+      , scope: {}
+
+      , compile: function(tElement, tAttrs, transclude) {
+
+        var markdown = tElement.text();
+
+        tElement.html(editTemplate);
+        var previewElement = angular.element(previewTemplate);
+        tElement.append(previewElement);
+
+        return function(scope, element, attrs){
+          scope.isEditMode = false;
+          scope.markdown = markdown;
+
+          drawPreview();
+
+          scope.switchToPreview = function(){
+            drawPreview();
+            scope.isEditMode = false;
+          }
+
+          scope.switchToEdit = function(){
+            scope.isEditMode = true;
+          }
+
+          function drawPreview(){
+            var makeHtml = converter.makeHtml(scope.markdown);
+            previewElement.html(makeHtml);
+          }
+
+        }
+      }
+
+    }
+  });
