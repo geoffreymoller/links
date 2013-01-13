@@ -131,6 +131,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   $scope.$on('keydown', function(event, originalEvent) {
     $ui.keydown(originalEvent);
   });
+
   $scope.$on('pagination', function(event, originalEvent, direction) {
     $scope.selectedItem = 0;
     if($scope.mode === 'edit') return;
@@ -139,6 +140,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     node = $('.pagination ' + node);
     node.length && node.trigger('click');
   });
+
   $scope.$on('edit', function(event, originalEvent) {
     if($scope.mode === 'edit') return;
     if(originalEvent.target.nodeName === 'INPUT') return;
@@ -151,10 +153,12 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       });
     });
   });
+
   $scope.$on('vim', function(event, keyCode) {
     if($scope.mode === 'edit') return;
     $scope.handleVim(event, keyCode);
   });
+
   $scope.$on('esc', function(event, keyCode) {
     $scope.$apply(function() {
       $scope.links[$scope.selectedItem].edit = false;
@@ -162,6 +166,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     });
     $scope.blur();
   });
+
   $scope.$on('follow', function(scope, event) {
     if($scope.mode === 'edit') return;
     if(event.target.nodeName === 'INPUT') return;
@@ -169,6 +174,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     var link = links[$scope.selectedItem];
     window.open(link.value.URI);
   });
+
   $scope.$on('enter', function(e, originalEvent) {
     if(originalEvent.shiftKey){
       if($scope.mode === 'edit'){
@@ -202,6 +208,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     }
     $scope.blur();
   });
+
   $scope.handleVim = function(event, keyCode){
     $scope.selectedNote = null; 
     var up = keyCode === 75;
@@ -226,7 +233,6 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       }
     }
   }
-
 
   $scope.linkMediaUrl = function(link){
     //support hacked (qs) image uris for now
