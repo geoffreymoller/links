@@ -205,6 +205,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
         originalEvent.preventDefault();
         $scope.handleSave();
       }
+      else if(originalEvent.target.nodeName === 'TEXTAREA'){ 
+        return;
+      }
     }
     $scope.blur();
   });
