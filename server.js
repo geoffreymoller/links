@@ -24,6 +24,11 @@ var connection = new(cradle.Connection)('https://geoffreymoller.cloudant.com', 4
 var db = connection.database('collect');
 var app = module.exports = express.createServer();
 
+var EMBEDLY_KEY = process.env.EMBEDLY_KEY;
+var embedly = require('embedly')
+  , Api = embedly.Api
+  , api = new Api({user_agent: 'Mozilla/5.0 (compatible; myapp/1.0; u@my.com)', key: EMBEDLY_KEY})
+
 // Configuration
 
 app.configure(function(){
@@ -63,20 +68,29 @@ app.post('/save', function(req, res){
   var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
   var saveImage = body.saveImage === 'true'; 
 
-  if(!isImage){
-    _save(uri);
-  }
-  else if(isImage && !saveImage){
-    _save(uri, ['img']);
-  }
-  else {
-    var deferred = upload_image(uri);
-    deferred.then(function(s3Url){
-      _save(s3Url, ['img']);
-    }, function(res){
-      console.log('S3 Error: ' + res.statusCode);
-      throw new Error('S3 Error: ' + res.statusCode);
-    });
+  var deferred = getEmbedlyInfo(uri); 
+  deferred.then(function(embedlyObject){
+    getImageAndSave(uri, embedlyObject);
+  }, function(res){
+    throw new Error('Embedly Error: ' + res.statusCode);
+  });
+
+  function getImageAndSave(uri, embedlyObject){
+    if(!isImage){
+      _save(uri, [], embedlyObject);
+    }
+    else if(isImage && !saveImage){
+      _save(uri, ['img'], embedlyObject);
+    }
+    else {
+      deferred = upload_image(uri);
+      deferred.then(function(s3Url){
+        _save(s3Url, ['img'], embedlyObject);
+      }, function(res){
+        console.log('S3 Error: ' + res.statusCode);
+        throw new Error('S3 Error: ' + res.statusCode);
+      });
+    }
   }
 
   function _save(path, autoTags){
@@ -91,7 +105,7 @@ app.post('/save', function(req, res){
     var tags = body.tags;
     if(tags){
         tags = tags.split(',');
-        if(autoTags){
+        if(autoTags.length){
           tags = tags.concat(autoTags);
         }
         payload.tags = tags;
@@ -175,6 +189,16 @@ function upload_image(path){
 
   return deferred.promise;
 
+}
+
+function getEmbedlyInfo(url){
+  var deferred = q.defer();
+  api.oembed({url: url}).on('complete', function(objs) {
+    deferred.resolve(objs[0]);
+  }).on('error', function(e) {
+    deferred.reject(res);
+  }).start()
+  return deferred.promise;
 }
 
 function getCallback(message, response){
