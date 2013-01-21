@@ -12,6 +12,10 @@
     </div>
     <span ng-click="handleDelete(link)" class="delete">[delete]</span>
 
+    <div ng:show="link.value.thumbnail_url" class="image-frame">
+      <img gm-cropped-image ng:show="link.value.thumbnail_url" />
+    </div>
+    
     <a ng:show="!link.edit" class="title" href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
     <div ng:show="link.edit"><input type="text" ng:model="link.value.title" /></div>
 

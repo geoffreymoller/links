@@ -170,3 +170,18 @@ angular.module('links.ui', [])
 
   }])
 
+  .directive('gmCroppedImage', function($ui, $http) {
+
+    return function(scope, element, attrs){
+
+      if(scope.link.value.thumbnail_url){
+        var $img = $(element[0]);
+        var $container = $img.parent();
+        $img.attr('src', scope.link.value.thumbnail_url);
+        //$img.height(100); 
+        //$ui.cropAndFrame($img, $container, 100);
+      }
+
+    }   
+  }); 
+

@@ -93,13 +93,14 @@ app.post('/save', function(req, res){
     }
   }
 
-  function _save(path, autoTags){
+  function _save(path, autoTags, embedlyObject){
 
     var payload = {
-        title: body.title,
-        URI: path,
-        notes: body.notes.match(/\S/) ? body.notes : null ,
-        date: new Date().getTime()
+        title: body.title
+        , URI: path
+        , notes: body.notes.match(/\S/) ? body.notes : null 
+        , date: new Date().getTime()
+        , thumbnail_url: embedlyObject.thumbnail_url
     }
 
     var tags = body.tags;
