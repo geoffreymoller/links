@@ -102,6 +102,7 @@ ul#links div.tags a {
   float: left;
   font-weight: normal;
   margin-right: 5px;
+  margin-bottom: 5px;
   padding: 3px;
 }
 
@@ -167,7 +168,6 @@ div.image-frame{
   float: left;
   min-height: 92px;
   min-width: 92px;
-  /*max-width: auto;*/
   padding: 3px; 
   background: #fff;
   border: 1px solid #ccc;
@@ -177,3 +177,7 @@ div.image-frame{
   margin-right: 5px; 
 }
 
+div.info-frame{
+  float: left;
+  max-width: 800px;
+}
