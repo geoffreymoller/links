@@ -1,6 +1,6 @@
 angular.module('links.ui', [])
 
-  .factory('$ui', ['$rootScope', function($rootScope){
+  .factory('$ui', function($rootScope){
 
     return {
 
@@ -168,11 +168,13 @@ angular.module('links.ui', [])
       } 
     }
 
-  }])
+  })
 
   .directive('gmCroppedImage', function($ui, $http) {
 
     return function(scope, element, attrs){
+    
+      //debugger;
 
       if(scope.link.value.thumbnail_url){
         var $img = $(element[0]);

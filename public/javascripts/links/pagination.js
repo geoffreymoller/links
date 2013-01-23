@@ -1,7 +1,7 @@
 
 angular.module('links.pagination', [])
 
-  .factory('$pagination', ['$rootScope', function(rootScope){
+  .factory('$pagination', function($rootScope){
 
     return {
   
@@ -43,7 +43,7 @@ angular.module('links.pagination', [])
 
 
 
-  }]);
+  });
 
 
 
