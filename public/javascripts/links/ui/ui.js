@@ -104,9 +104,10 @@ ui.factory('$ui', function($rootScope){
       .css('visibility', 'hidden')
       .appendTo($('body'));
 
-      $img.css('max-width', 'inherit');
 
       $img.imagesLoaded(_.bind(function($images, $proper, $broken){
+
+        $img.css('max-width', $img.width());
 
         var containerPadding = {
           top: parseInt($container.css('paddingTop'))
