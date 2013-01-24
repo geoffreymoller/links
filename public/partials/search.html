@@ -12,23 +12,29 @@
     </div>
     <span ng-click="handleDelete(link)" class="delete">[delete]</span>
 
-    <a ng:show="!link.edit" class="title" href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
-    <div ng:show="link.edit"><input type="text" ng:model="link.value.title" /></div>
-
-    <div ng:show="!link.edit" class="date">Created: {{link.value | date}}</div>
-
-    <ng-include ng:show="!link.edit" src="linkMediaUrl(link)"></ng-include>
-    <div ng:show="link.edit"><label ng:show="link.edit" ng:model="link.value.uri">{{link.value.uri}}</label></div>
-
-    <div ng:show="!link.edit" class="tags clearfix">
-      <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
+    <div ng:show="link.value.thumbnail_url" class="image-frame">
+      <img gm-cropped-image ng:show="link.value.thumbnail_url" />
     </div>
-    <div ng:show="link.edit">
-      <input type="text" 
-             class="tags"
-             ng:model="link.value.tags" 
-             autofocus 
-      />
+   
+    <div class="info-frame">
+      <a ng:show="!link.edit" class="title" href="{{link.value | uri}}" target="_blank">{{link.value.title | truncate:145}}</a>
+      <div ng:show="link.edit"><input type="text" ng:model="link.value.title" /></div>
+
+      <div ng:show="!link.edit" class="date">Created: {{link.value | date}}</div>
+
+      <ng-include ng:show="!link.edit" src="linkMediaUrl(link)"></ng-include>
+      <div ng:show="link.edit"><label ng:show="link.edit" ng:model="link.value.uri">{{link.value.uri}}</label></div>
+
+      <div ng:show="!link.edit" class="tags clearfix">
+        <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
+      </div>
+      <div ng:show="link.edit">
+        <input type="text" 
+               class="tags"
+               ng:model="link.value.tags" 
+               autofocus 
+        />
+      </div>
     </div>
 
     <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>

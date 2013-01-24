@@ -7,11 +7,14 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
+  'public/javascripts/vendor/jquery-1.7.min.js',
+  'public/javascripts/vendor/jquery.imagesloaded.js',
   'public/javascripts/vendor/underscore-min.js',
   'public/javascripts/vendor/angular/angular.min.js',
   'public/javascripts/vendor/angular/angular-resource.min.js',
   'public/javascripts/vendor/angular/angular-mocks.js',
   'public/javascripts/links/pagination.js',
+  'public/javascripts/links/ui/ui.js',
   'public/javascripts/links/data/data.js',
   'test/*.js'
 ];
