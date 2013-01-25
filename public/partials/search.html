@@ -35,10 +35,9 @@
                autofocus 
         />
       </div>
+      <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
+      <div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>
     </div>
-
-    <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
-    <div ng:show="link.edit"><textarea ng:bind-html-unsafe="link.value.notes" ng:model="link.value.notes"></textarea></div>
 
   </li>
 </ul>
