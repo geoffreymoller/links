@@ -48,6 +48,24 @@ li {
   list-style-type: none;
 }
 
+div.image-frame{
+  float: left;
+  min-height: 92px;
+  min-width: 92px;
+  padding: 3px; 
+  background: #fff;
+  border: 1px solid #ccc;
+  -moz-border-radius: 2px; 
+  -webkit-border-radius: 2px; 
+  border-radius: 2px; 
+  margin-right: 8px; 
+}
+
+div.info-frame{
+  float: left;
+  width: 700px;
+}
+
 ul#links {
   margin-top: 20px;
 }
@@ -79,16 +97,29 @@ ul#links li a.link {
   font-weight: normal;
 }
 
+ul#links input, 
+ul#links textarea{
+  width: 600px; 
+}
+
+ul#links.images input, 
+ul#links.images textarea{
+  width: 280px; 
+  max-height: 600px;
+}
+
+ul#links.images textarea{
+  display: none;
+}
+
 ul#links input {
   border-radius: 2px;
   height: 24px;
   padding: 10px;
-  width: 60%;
 }
 ul#links textarea {
   border-radius: 2px;
   height: 250px;
-  width: 60%;
 }
 
 div.tags {
@@ -110,7 +141,7 @@ ul#links.images li {
   float: left;
   height: 150px;
   margin-right: 5px;
-  width: 300px;
+  width: 430px;
 }
 
 ul#links.images li a,
@@ -164,20 +195,3 @@ span.cancel {
   right: 60px;
 }
 
-div.image-frame{
-  float: left;
-  min-height: 92px;
-  min-width: 92px;
-  padding: 3px; 
-  background: #fff;
-  border: 1px solid #ccc;
-  -moz-border-radius: 2px; 
-  -webkit-border-radius: 2px; 
-  border-radius: 2px; 
-  margin-right: 8px; 
-}
-
-div.info-frame{
-  float: left;
-  max-width: 800px;
-}
