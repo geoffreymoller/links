@@ -70,7 +70,7 @@ angular.module('links.data', [])
 
         var all = tag === "all"; 
         if(!tag || all){
-          uri = baseURI + 'uri/_view/uri?descending=true&limit=10&callback=?';
+          uri = baseURI + 'uri/_view/uri?descending=true&limit=50&callback=?';
           promise = $.getJSON(uri);
         }
         else {
