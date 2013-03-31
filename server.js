@@ -170,8 +170,9 @@ function upload_image(path){
       path = '/' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + path;
 
       var req = client.put(path, {
-        'Content-Type': res.headers['content-type'],
-        'Content-Length': res.headers['content-length']
+        'Content-Type': res.headers['content-type']
+        , 'Content-Length': res.headers['content-length']
+        , 'x-amz-acl': 'public-read'
       });
 
       req.on('response', function(res) {
