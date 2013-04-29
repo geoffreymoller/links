@@ -75,6 +75,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     if(typeof link.value.tags === 'string'){
       link.value.tags = link.value.tags.split(',');
     }
+    link.value.tags = _.uniq(_.map(link.value.tags, function(tag){
+      return tag.toLowerCase();
+    }));
     var params = {
       id: link.id   
       , title: link.value.title   
