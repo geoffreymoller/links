@@ -12,7 +12,7 @@ module.exports = function (grunt) {
   });
 
   // Default task
-  grunt.registerTask('default', 'lint test');
+  grunt.registerTask('default', 'server');
 
   grunt.registerTask('server', 'start testacular server', function () {
     //Mark the task as async but never call done, so the server stays up
