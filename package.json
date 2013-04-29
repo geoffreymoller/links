@@ -18,7 +18,7 @@
     , "embedly": ">= 0.6.0"
   }
   , "devDependencies": {
-      "grunt": ">= 0.3.11"
+      "grunt": ">= 0.4.1"
       , "testacular": "0.2.0"
   }
  , "scripts" :
