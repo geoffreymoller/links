@@ -15,7 +15,7 @@
     , "knox": ">= 0.6.0"
     , "q": ">= 0.8.2"
     , "request": ">= 2.9.150"
-    , "embedly": ">= 0.6.0"
+    , "embedly": "= 0.6.0"
   }
   , "devDependencies": {
       "grunt": ">= 0.4.1"
