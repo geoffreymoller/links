@@ -27,7 +27,7 @@ ui.factory('$ui', function($rootScope){
       else if(e.keyCode === 69){
         $rootScope.$broadcast('edit', e);
       }
-      else if(e.keyCode === 70){
+      else if(e.keyCode === 70 && !e.metaKey){
         $rootScope.$broadcast('follow', e);
       }
       else if(e.keyCode === 27){
