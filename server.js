@@ -198,7 +198,7 @@ function getEmbedlyInfo(url){
   api.oembed({url: url}).on('complete', function(objs) {
     deferred.resolve(objs[0]);
   }).on('error', function(e) {
-    deferred.reject(res);
+    deferred.reject(e);
   }).start()
   return deferred.promise;
 }
