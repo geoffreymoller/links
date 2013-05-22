@@ -171,38 +171,19 @@ app.post('/save', function(req, res){
         payload.tags = tags;
     }
 
-    var id = uuid()
     var callback = getCallback('Document Saved!', res);
-    db.save(id, payload, callback);
+    var id = body.id;
+
+    if(id){
+      db.merge(id, payload, callback);
+    }
+    else {
+      id = uuid();
+      db.save(id, payload, callback);
+    }
   }
 
 });
-
-app.post('/update', function(req, res){
-
-  var id = req.body.id; 
-
-  var tags = req.body.tags;
-  if(tags && tags.length){
-      tags = tags.split(',');
-  }
-  else {
-      tags = []; 
-  }
-
-  var payload = {
-    "title": req.body.title,
-    "tags": tags,
-    "date_modified": new Date().getTime(),
-    "notes": req.body.notes,
-    "deleted": false
-  }
-
-  var id = req.body.id;
-  var callback = getCallback('Link Updated!', res);
-  db.merge(id, payload, callback);
-
-})
 
 app.get('/delete', function(req, res){
   var query = req.query;
