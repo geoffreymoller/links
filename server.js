@@ -54,13 +54,72 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
-app.get('/getURIByKey', function(req, res){
-  var query = req.query;
-  var URI = query.URI;
+app.get('/link', function(req, res){
+  var uri = req.query.URI;
   var callback = getCallback('Link Retrieved!', res);
-  db.view('uri/uriPlain', {key: URI}, callback)
+  db.view('uri/uriPlain', {key: uri}, callback)
 });
 
+app.post('/link', function(req, res){
+
+  var link = req.body.value;
+  var uri = link.uri;
+  var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
+  var saveImage = link.saveImage === 'true'; 
+
+  var deferred = getEmbedlyInfo(uri); 
+  deferred.then(function(embedlyObject){
+    getImageAndSave(uri, embedlyObject);
+  }, function(res){
+    throw new Error('Embedly Error: ' + res.statusCode);
+  });
+
+  function getImageAndSave(uri, embedlyObject){
+    if(!isImage){
+      _save(uri, [], embedlyObject);
+    }
+    else if(isImage && !saveImage){
+      _save(uri, ['img'], embedlyObject);
+    }
+    else {
+      deferred = upload_image(uri);
+      deferred.then(function(s3Url){
+        _save(s3Url, ['img'], embedlyObject);
+      }, function(res){
+        console.log('S3 Error: ' + res.statusCode);
+        throw new Error('S3 Error: ' + res.statusCode);
+      });
+    }
+  }
+
+  function _save(path, autoTags, embedlyObject){
+
+    var payload = {
+        title: link.title
+        , URI: path
+        , notes: link.notes
+        , date: new Date().getTime()
+        , thumbnail_url: embedlyObject.thumbnail_url
+    }
+
+    var tags = link.tags;
+    if(tags){
+        if(autoTags.length){
+          tags = tags.concat(autoTags);
+        }
+        payload.tags = tags;
+    }
+    console.log(typeof tags);
+    console.log(tags);
+
+    var id = uuid()
+    var callback = getCallback('Document Saved!', res);
+    db.save(id, payload, callback);
+  }
+
+});
+
+//TODO - remove rest of non-restful endpoints
 app.post('/save', function(req, res){
 
   var body = req.body;
