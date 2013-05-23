@@ -62,10 +62,10 @@ app.get('/link', function(req, res){
 
 app.post('/link', function(req, res){
 
-  var link = req.body.value;
-  var uri = link.uri;
+  var link = req.body;
+  var uri = link.value.uri;
   var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
-  var saveImage = link.saveImage === 'true'; 
+  var saveImage = link.value.saveImage === 'true'; 
 
   var deferred = getEmbedlyInfo(uri); 
   deferred.then(function(embedlyObject){
@@ -95,76 +95,15 @@ app.post('/link', function(req, res){
   function _save(path, autoTags, embedlyObject){
 
     var payload = {
-        title: link.title
+        title: link.value.title
         , URI: path
-        , notes: link.notes
+        , notes: link.value.notes
         , date: new Date().getTime()
         , thumbnail_url: embedlyObject.thumbnail_url
     }
 
-    var tags = link.tags;
+    var tags = link.value.tags;
     if(tags){
-        if(autoTags.length){
-          tags = tags.concat(autoTags);
-        }
-        payload.tags = tags;
-    }
-    console.log(typeof tags);
-    console.log(tags);
-
-    var id = uuid()
-    var callback = getCallback('Document Saved!', res);
-    db.save(id, payload, callback);
-  }
-
-});
-
-//TODO - remove rest of non-restful endpoints
-app.post('/save', function(req, res){
-
-  var body = req.body;
-  var uri = body.uri;
-  var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
-  var saveImage = body.saveImage === 'true'; 
-
-  var deferred = getEmbedlyInfo(uri); 
-  deferred.then(function(embedlyObject){
-    getImageAndSave(uri, embedlyObject);
-  }, function(res){
-    throw new Error('Embedly Error: ' + res.statusCode);
-  });
-
-  function getImageAndSave(uri, embedlyObject){
-    if(!isImage){
-      _save(uri, [], embedlyObject);
-    }
-    else if(isImage && !saveImage){
-      _save(uri, ['img'], embedlyObject);
-    }
-    else {
-      deferred = upload_image(uri);
-      deferred.then(function(s3Url){
-        _save(s3Url, ['img'], embedlyObject);
-      }, function(res){
-        console.log('S3 Error: ' + res.statusCode);
-        throw new Error('S3 Error: ' + res.statusCode);
-      });
-    }
-  }
-
-  function _save(path, autoTags, embedlyObject){
-
-    var payload = {
-        title: body.title
-        , URI: path
-        , notes: body.notes.match(/\S/) ? body.notes : null 
-        , date: new Date().getTime()
-        , thumbnail_url: embedlyObject.thumbnail_url
-    }
-
-    var tags = body.tags;
-    if(tags){
-        tags = tags.split(',');
         if(autoTags.length){
           tags = tags.concat(autoTags);
         }
@@ -172,15 +111,15 @@ app.post('/save', function(req, res){
     }
 
     var callback = getCallback('Document Saved!', res);
-    var id = body.id;
-
-    if(id){
+    var id; 
+    if(id = link.id){
       db.merge(id, payload, callback);
     }
     else {
       id = uuid();
       db.save(id, payload, callback);
     }
+
   }
 
 });
