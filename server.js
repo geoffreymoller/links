@@ -63,16 +63,21 @@ app.get('/link', function(req, res){
 app.post('/link', function(req, res){
 
   var link = req.body;
-  var uri = link.value.uri;
-  var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
-  var saveImage = link.value.saveImage === 'true'; 
 
-  var deferred = getEmbedlyInfo(uri); 
-  deferred.then(function(embedlyObject){
-    getImageAndSave(uri, embedlyObject);
-  }, function(res){
-    throw new Error('Embedly Error: ' + res.statusCode);
-  });
+  if(!link.value.uri){
+    _update();
+  }
+  else{
+    var uri = link.value.uri;
+    var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
+    var saveImage = link.value.saveImage === 'true'; 
+    var deferred = getEmbedlyInfo(uri); 
+    deferred.then(function(embedlyObject){
+      getImageAndSave(uri, embedlyObject);
+    }, function(res){
+      throw new Error('Embedly Error: ' + res.statusCode);
+    });
+  }
 
   function getImageAndSave(uri, embedlyObject){
     if(!isImage){
@@ -90,6 +95,14 @@ app.post('/link', function(req, res){
         throw new Error('S3 Error: ' + res.statusCode);
       });
     }
+  }
+
+  function _update(){
+    var payload = link.value;
+    payload.date_modified = new Date().getTime();
+    payload.tags = link.value.tags.split(',');
+    var callback = getCallback('Link Updated!', res);
+    db.merge(link.id, payload, callback);
   }
 
   function _save(path, autoTags, embedlyObject){

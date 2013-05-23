@@ -78,15 +78,17 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     link.value.tags = _.uniq(_.map(link.value.tags, function(tag){
       return tag.toLowerCase();
     }));
-    var params = {
+    var _link = {
       id: link.id   
-      , title: link.value.title   
-      , tags: link.value.tags.join()
-      , notes: link.value.notes   
+      , value: {
+        title: link.value.title   
+        , tags: link.value.tags.join()
+        , notes: link.value.notes   
+      }
     };
 
     //TODO -  use a resource
-    var promise = $http.post('/update', params);
+    var promise = $http.post('/link', _link);
     promise.success(function(){
       //TODO - success message
       link.edit = false;
