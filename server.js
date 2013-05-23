@@ -54,19 +54,18 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
-app.get('/getURIByKey', function(req, res){
-  var query = req.query;
-  var URI = query.URI;
+app.get('/link', function(req, res){
+  var uri = req.query.URI;
   var callback = getCallback('Link Retrieved!', res);
-  db.view('uri/uriPlain', {key: URI}, callback)
+  db.view('uri/uriPlain', {key: uri}, callback)
 });
 
-app.post('/save', function(req, res){
+app.post('/link', function(req, res){
 
-  var body = req.body;
-  var uri = body.uri;
+  var link = req.body;
+  var uri = link.value.uri;
   var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
-  var saveImage = body.saveImage === 'true'; 
+  var saveImage = link.value.saveImage === 'true'; 
 
   var deferred = getEmbedlyInfo(uri); 
   deferred.then(function(embedlyObject){
@@ -96,54 +95,34 @@ app.post('/save', function(req, res){
   function _save(path, autoTags, embedlyObject){
 
     var payload = {
-        title: body.title
+        title: link.value.title
         , URI: path
-        , notes: body.notes.match(/\S/) ? body.notes : null 
+        , notes: link.value.notes
         , date: new Date().getTime()
         , thumbnail_url: embedlyObject.thumbnail_url
     }
 
-    var tags = body.tags;
+    var tags = link.value.tags;
     if(tags){
-        tags = tags.split(',');
         if(autoTags.length){
           tags = tags.concat(autoTags);
         }
         payload.tags = tags;
     }
 
-    var id = uuid()
     var callback = getCallback('Document Saved!', res);
-    db.save(id, payload, callback);
+    var id; 
+    if(id = link.id){
+      db.merge(id, payload, callback);
+    }
+    else {
+      id = uuid();
+      db.save(id, payload, callback);
+    }
+
   }
 
 });
-
-app.post('/update', function(req, res){
-
-  var id = req.body.id; 
-
-  var tags = req.body.tags;
-  if(tags && tags.length){
-      tags = tags.split(',');
-  }
-  else {
-      tags = []; 
-  }
-
-  var payload = {
-    "title": req.body.title,
-    "tags": tags,
-    "date_modified": new Date().getTime(),
-    "notes": req.body.notes,
-    "deleted": false
-  }
-
-  var id = req.body.id;
-  var callback = getCallback('Link Updated!', res);
-  db.merge(id, payload, callback);
-
-})
 
 app.get('/delete', function(req, res){
   var query = req.query;

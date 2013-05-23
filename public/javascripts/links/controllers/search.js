@@ -85,7 +85,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
       , notes: link.value.notes   
     };
 
-    //TODO - $http to service
+    //TODO -  use a resource
     var promise = $http.post('/update', params);
     promise.success(function(){
       //TODO - success message
@@ -99,10 +99,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
   };
 
   $scope.handleDelete = function(link){
-    var id = link.value._id;
-    var rev = link.value._rev;
+    var id = link.id;
+    var rev = link.value.rev;
     if(confirm('Are you sure you want to delete the link?')){
-      //TODO - $http to service
+      //TODO - use a resource 
       var promise = $http.get('/delete?id=' + id + '&rev=' + rev);
       promise.success(function(){
         //TODO - success alert/dialog
