@@ -1,3 +1,5 @@
+'use strict';
+
 describe('services', function(){
 
   describe('data.comparator', function(){

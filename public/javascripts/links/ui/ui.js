@@ -6,7 +6,7 @@ ui.factory('$ui', function($rootScope){
 
     paint: function(){
       $rootScope.loaded = false;
-      if($rootScope.search.indexOf('img') !== -1){
+      if($rootScope.search && $rootScope.search.indexOf('img') !== -1){
         $rootScope.listType = 'images';
         $rootScope.pageLength = 6; 
       }

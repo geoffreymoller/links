@@ -246,10 +246,9 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $scope.linkMediaUrl = function(link){
     //support hacked (qs) image uris for now
-    var uri = link.value.URI || link.value.uri;
-    uri = uri.split('?')[0];
-    if(uri.search(/png|jpg|jpeg|gif$/) > -1){
-      return 'partials/media/image.html'; 
+    var uri = $scope.uri(link);
+    if($scope.isImage(uri)){
+      return 'partials/media/image.html';
     }
     else if(uri.indexOf('http://www.youtube.com/watch') === 0){
       return 'partials/media/video.html'; 
@@ -260,6 +259,14 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     else {
       return 'partials/media/link.html'; 
     }
+  }
+
+  $scope.uri = function(link){
+    return link.value.URI || link.value.uri;
+  }
+
+  $scope.isImage = function(uri){
+    return uri.search(/png|jpg|jpeg|gif$/) !== -1;
   }
 
 }

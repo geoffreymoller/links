@@ -13,10 +13,14 @@ files = [
   'public/javascripts/vendor/angular/angular.min.js',
   'public/javascripts/vendor/angular/angular-resource.min.js',
   'public/javascripts/vendor/angular/angular-mocks.js',
+  'public/javascripts/links/app.js',
+  'public/javascripts/links/filter.js',
   'public/javascripts/links/pagination.js',
+  'public/javascripts/links/controllers/search.js',
   'public/javascripts/links/ui/ui.js',
   'public/javascripts/links/data/data.js',
-  'test/*.js'
+  'test/*.js',
+  'test/controllers/*.js'
 ];
 
 // list of files to exclude
