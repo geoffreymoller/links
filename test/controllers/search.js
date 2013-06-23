@@ -4,7 +4,7 @@ describe('Search Controller', function () {
 
   beforeEach(module('links'));
 
-  var controller, scope, mockTabs;
+  var controller, scope;
 
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     scope = $rootScope.$new();
@@ -40,15 +40,29 @@ describe('Search Controller', function () {
 
       var uri;
 
-      it('parses a uri for images correctly', function () {
-        uri = 'foo.gif';
+      it('parses jpg images correctly', function () {
+        uri = 'http://foo/foo.jpg';
         expect(scope.isImage(uri)).toBe(true);
-        uri = 'foo.jpg';
+      });
+
+      it('parses jpeg images correctly', function () {
+        uri = 'http://foo/foo.jpeg';
         expect(scope.isImage(uri)).toBe(true);
-        uri = 'foo.jpeg';
+      });
+
+      it('parses gif images correctly', function () {
+        uri = 'http://foo/foo.gif';
         expect(scope.isImage(uri)).toBe(true);
-        uri = 'foo.png';
+      });
+
+      it('parses png images correctly', function () {
+        uri = 'http://foo/foo.png';
         expect(scope.isImage(uri)).toBe(true);
+      });
+
+      it('parses non-image uris correctly', function () {
+        uri = 'http://foo';
+        expect(scope.isImage(uri)).toBe(false);
       });
 
     });
