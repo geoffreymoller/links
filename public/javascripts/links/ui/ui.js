@@ -107,6 +107,8 @@ ui.factory('$ui', function($rootScope){
 
       $img.imagesLoaded(_.bind(function($images, $proper, $broken){
 
+        //TODO - update cropAndFrame to handle box-sizing: border-box 
+
         $img.css('max-width', $img.width());
 
         var containerPadding = {
