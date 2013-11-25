@@ -6,6 +6,7 @@ body {
 
 .row {
   padding: 30px 20px 50px 20px;
+  max-width: 880px;
 }
 .header.row{
   padding: 0 20px;

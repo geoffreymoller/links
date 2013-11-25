@@ -3,8 +3,8 @@ http://codepen.io/restlessdesign/pen/Kxhsy
 http://codepen.io/collection/HtAne/4
 */
 #clock_container {
-  min-height: 350px;
-  background: #0e0e15;
+  height: 200px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
