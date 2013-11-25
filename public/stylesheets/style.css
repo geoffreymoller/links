@@ -13,7 +13,7 @@ body {
 
 .row {
   padding: 30px 20px 50px 20px;
-  max-width: 880px;
+  max-width: 600px;
 }
 .header.row{
   padding: 0 20px;
@@ -80,7 +80,7 @@ div.image-frame{
 
 div.info-frame{
   float: left;
-  width: 700px;
+  width: 380px;
 }
 
 ul#links {
