@@ -1,15 +1,18 @@
 body {
   background: #f7f7f7;
   height: 100%;
+  font-size: 
 }
 
-.container {
-  box-shadow: 0 0 5px #888;
-  background: #fff;
+.row {
   padding: 30px 20px 50px 20px;
 }
+.header.row{
+  padding: 0 20px;
+}
 
-.pagination.compact-theme {
+.pagination.simple-pagination {
+  margin-top: 20px;
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -25,14 +28,20 @@ h1, form {
 
 form {
   float: right;
-}
-form input[type="text"] {
-  height: 25px;
+  margin-top: 25px;
 }
 
 ul, li {
   margin: 0;
   padding: 0;
+}
+
+ul,
+ol,
+dl {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 1.20rem;
 }
 
 .notifier {
@@ -67,7 +76,7 @@ div.info-frame{
 }
 
 ul#links {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 ul#links img {
@@ -79,12 +88,12 @@ ul#links img.video {
 
 ul#links li {
   border-top: 1px solid #ccc;
-  padding: 5px 8px 5px 8px;
+  padding: 10px 8px 20px 8px;
   position: relative;
 }
 
 ul#links li.selected {
-  background: #e8f1fd;
+  background: #cbe9f3;
 }
 
 ul#links li a {
@@ -137,6 +146,7 @@ ul#links div.tags a {
   padding: 3px;
 }
 
+/*
 ul#links.images li {
   float: left;
   height: 150px;
@@ -153,6 +163,7 @@ ul#links.images li a.image,
 ul#links.images li div.date {
   display: block;
 }
+*/
 
 div.notes {
   background: #f4f4f4;
@@ -181,13 +192,14 @@ span.delete,
 span.save,
 span.cancel,
 span.edit {
+  display: block;
   cursor: pointer;
   position: absolute;
   right: 5px;
   top: 5px;
 }
 span.edit {
-  right: 60px;
+  right: 70px;
 }
 span.save {
   right: 110px;

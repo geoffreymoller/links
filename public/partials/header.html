@@ -1,5 +1,7 @@
-<h1><a href="/">{{pageName}}</a> <span ng-show="pageTag">: {{pageTag}}</span></h1>
-<form ng-submit="fireSearch(search)">
-  <input id="search" name="search" ng-model="search" type="text"></input>
-</form>
-<div class="pagination"></div>
+<div class="header row">
+  <h1><a href="/">{{pageName}}</a> <span ng-show="pageTag">: {{pageTag}}</span></h1>
+  <form ng-submit="fireSearch(search)">
+    <input id="search" name="search" ng-model="search" type="text" placeholder="Search by tag..."></input>
+  </form>
+  <div class="pagination"></div>
+</div>

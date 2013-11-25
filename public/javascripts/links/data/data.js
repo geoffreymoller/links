@@ -71,7 +71,6 @@ angular.module('links.data', [])
         var all = tag === "all"; 
         if(!tag || all){
           uri = baseURI + 'uri/_view/uri?descending=true&limit=50&callback=?';
-          promise = $.getJSON(uri);
         }
         else {
           var keys = [];
@@ -81,9 +80,9 @@ angular.module('links.data', [])
           });
           uri += encodeURIComponent(JSON.stringify(keys));
           uri += '&callback=?';
-          promise = $.getJSON(uri);
         }
 
+        promise = $.getJSON(uri);
         promise.success(function(data){
           data.rows = self.filter(data.rows, ands, nots);
           recordSet = recordSet.concat(data.rows);

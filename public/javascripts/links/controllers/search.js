@@ -38,6 +38,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
         $scope.$apply(function(){
           $pagination.seed($scope.pageLength, index);
           $scope.updateLinks($pagination);
+          return false;
         });
       });
 

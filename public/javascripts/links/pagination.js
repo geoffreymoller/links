@@ -14,11 +14,11 @@ angular.module('links.pagination', [])
 
         if(collectionLength > this.pageLength){
           $('.pagination').pagination({
-            onClick: _.bind(pageSelectCallback, this)
+            onPageClick: _.bind(pageSelectCallback, this)
             , currentPage: this.page + 1
             , items: collectionLength
             , itemsOnPage: this.pageLength
-            , cssStyle: 'compact-theme'
+            , cssStyle: 'dark-theme'
           });
         }
 

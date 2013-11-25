@@ -1,8 +1,11 @@
 /**
-* simplePagination.js v1.0.0
+* simplePagination.js v1.6
 * A simple jQuery pagination plugin.
-* Author: Flavius Matis - http://flaviusmatis.github.com/
-* URL: https://github.com/flaviusmatis/simplePagination.js
+* http://flaviusmatis.github.com/simplePagination.js/
+*
+* Copyright 2012, Flavius Matis
+* Released under the MIT license.
+* http://flaviusmatis.github.com/license.html
 */
 
 (function($){
@@ -13,140 +16,242 @@
 				items: 1,
 				itemsOnPage: 1,
 				pages: 0,
-				displayedPages: 4,
+				displayedPages: 5,
 				edges: 2,
 				currentPage: 1,
-				hrefText: '#page-',
+				hrefTextPrefix: '#page-',
+				hrefTextSuffix: '',
 				prevText: 'Prev',
 				nextText: 'Next',
 				ellipseText: '&hellip;',
 				cssStyle: 'light-theme',
+				labelMap: [],
 				selectOnClick: true,
-				onClick: function() {
-					return false;
+				onPageClick: function(pageNumber, event) {
+					// Callback triggered when a page is clicked
+					// Page number is given as an optional parameter
 				},
-				callback: function() {
-					return false;
+				onInit: function() {
+					// Callback triggered immediately after initialization
 				}
 			}, options || {});
 
-			return this.each(function() {
-				o.pages = o.pages ? o.pages : Math.ceil(o.items / o.itemsOnPage) ? Math.ceil(o.items / o.itemsOnPage) : 1;
-				o.currentPage = o.currentPage - 1;
-				o.halfDisplayed = Math.ceil(o.displayedPages / 2);
-				$(this).addClass(o.cssStyle).data('pagination', o);
-				methods._draw.call(this);
-				o.callback(o.currentPage, this);
+			var self = this;
+
+			o.pages = o.pages ? o.pages : Math.ceil(o.items / o.itemsOnPage) ? Math.ceil(o.items / o.itemsOnPage) : 1;
+			o.currentPage = o.currentPage - 1;
+			o.halfDisplayed = o.displayedPages / 2;
+
+			this.each(function() {
+				self.addClass(o.cssStyle + ' simple-pagination').data('pagination', o);
+				methods._draw.call(self);
 			});
+
+			o.onInit();
+
+			return this;
 		},
 
 		selectPage: function(page) {
 			methods._selectPage.call(this, page - 1);
+			return this;
 		},
 
 		prevPage: function() {
-			var o = $(this).data('pagination');
+			var o = this.data('pagination');
 			if (o.currentPage > 0) {
 				methods._selectPage.call(this, o.currentPage - 1);
 			}
+			return this;
 		},
 
 		nextPage: function() {
-			var o = $(this).data('pagination');
+			var o = this.data('pagination');
 			if (o.currentPage < o.pages - 1) {
 				methods._selectPage.call(this, o.currentPage + 1);
 			}
+			return this;
+		},
+
+		getPagesCount: function() {
+			return this.data('pagination').pages;
+		},
+
+		getCurrentPage: function () {
+			return this.data('pagination').currentPage + 1;
+		},
+
+		destroy: function(){
+			this.empty();
+			return this;
+		},
+
+		drawPage: function (page) {
+			var o = this.data('pagination');
+			o.currentPage = page - 1;
+			this.data('pagination', o);
+			methods._draw.call(this);
+			return this;
+		},
+
+		redraw: function(){
+			methods._draw.call(this);
+			return this;
+		},
+
+		disable: function(){
+			var o = this.data('pagination');
+			o.disabled = true;
+			this.data('pagination', o);
+			methods._draw.call(this);
+			return this;
+		},
+
+		enable: function(){
+			var o = this.data('pagination');
+			o.disabled = false;
+			this.data('pagination', o);
+			methods._draw.call(this);
+			return this;
+		},
+
+		updateItems: function (newItems) {
+			var o = this.data('pagination');
+			o.items = newItems;
+			o.pages = methods._getPages(o);
+			this.data('pagination', o);
+			methods._draw.call(this);
+		},
+
+		updateItemsOnPage: function (itemsOnPage) {
+			var o = this.data('pagination');
+			o.itemsOnPage = itemsOnPage;
+			o.pages = methods._getPages(o);
+			this.data('pagination', o);
+			methods._selectPage.call(this, 0);
+			return this;
 		},
 
 		_draw: function() {
-			var $panel = $(this).empty(),
-				o = $panel.data('pagination'),
-				interval = methods._getInterval(o);
+			var	o = this.data('pagination'),
+				interval = methods._getInterval(o),
+				i,
+				tagName;
+
+			methods.destroy.call(this);
+			
+			tagName = (typeof this.prop === 'function') ? this.prop('tagName') : this.attr('tagName');
+
+			var $panel = tagName === 'UL' ? this : $('<ul></ul>').appendTo(this);
 
 			// Generate Prev link
 			if (o.prevText) {
-				methods._appendItem(this, o.currentPage - 1, {text: o.prevText, classes: 'prev'});
+				methods._appendItem.call(this, o.currentPage - 1, {text: o.prevText, classes: 'prev'});
 			}
 
 			// Generate start edges
 			if (interval.start > 0 && o.edges > 0) {
 				var end = Math.min(o.edges, interval.start);
-				for (var i = 0; i < end; i++) {
-					methods._appendItem(this, i);
+				for (i = 0; i < end; i++) {
+					methods._appendItem.call(this, i);
 				}
-				if (o.edges < interval.start && o.ellipseText) {
-					$panel.append('<span class="ellipse">' + o.ellipseText + '</span>');
+				if (o.edges < interval.start && (interval.start - o.edges != 1)) {
+					$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+				} else if (interval.start - o.edges == 1) {
+					methods._appendItem.call(this, o.edges);
 				}
 			}
 
 			// Generate interval links
-			for (var i = interval.start; i < interval.end; i++) {
-				methods._appendItem(this, i);
+			for (i = interval.start; i < interval.end; i++) {
+				methods._appendItem.call(this, i);
 			}
 
 			// Generate end edges
 			if (interval.end < o.pages && o.edges > 0) {
-				if (o.pages - o.edges > interval.end && o.ellipseText) {
-					$panel.append('<span class="ellipse">' + o.ellipseText + '</span>');
+				if (o.pages - o.edges > interval.end && (o.pages - o.edges - interval.end != 1)) {
+					$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+				} else if (o.pages - o.edges - interval.end == 1) {
+					methods._appendItem.call(this, interval.end++);
 				}
 				var begin = Math.max(o.pages - o.edges, interval.end);
-				for (var i = begin; i < o.pages; i++) {
-					methods._appendItem(this, i);
+				for (i = begin; i < o.pages; i++) {
+					methods._appendItem.call(this, i);
 				}
 			}
 
 			// Generate Next link
 			if (o.nextText) {
-				methods._appendItem(this, o.currentPage + 1, {text: o.nextText, classes: 'next'});
+				methods._appendItem.call(this, o.currentPage + 1, {text: o.nextText, classes: 'next'});
 			}
+		},
+
+		_getPages: function(o) {
+			var pages = Math.ceil(o.items / o.itemsOnPage);
+			return pages || 1;
 		},
 
 		_getInterval: function(o) {
 			return {
-				start: o.currentPage > o.halfDisplayed ? Math.max(Math.min(o.currentPage - o.halfDisplayed, (o.pages - o.displayedPages)), 0) : 0,
-				end: o.currentPage > o.halfDisplayed ? Math.min(o.currentPage + o.halfDisplayed, o.pages) : Math.min(o.displayedPages, o.pages)
+				start: Math.ceil(o.currentPage > o.halfDisplayed ? Math.max(Math.min(o.currentPage - o.halfDisplayed, (o.pages - o.displayedPages)), 0) : 0),
+				end: Math.ceil(o.currentPage > o.halfDisplayed ? Math.min(o.currentPage + o.halfDisplayed, o.pages) : Math.min(o.displayedPages, o.pages))
 			};
 		},
 
-		_appendItem: function(panel, pageIndex, opts) {
-			var options, $link, o = $(panel).data('pagination');
+		_appendItem: function(pageIndex, opts) {
+			var self = this, options, $link, o = self.data('pagination'), $linkWrapper = $('<li></li>'), $ul = self.find('ul');
 
 			pageIndex = pageIndex < 0 ? 0 : (pageIndex < o.pages ? pageIndex : o.pages - 1);
 
-			options = $.extend({
+			options = {
 				text: pageIndex + 1,
 				classes: ''
-			}, opts || {});
+			};
 
-			if (pageIndex == o.currentPage) {
+			if (o.labelMap.length && o.labelMap[pageIndex]) {
+				options.text = o.labelMap[pageIndex];
+			}
+
+			options = $.extend(options, opts || {});
+
+			if (pageIndex == o.currentPage || o.disabled) {
+				if (o.disabled) {
+					$linkWrapper.addClass('disabled');
+				} else {
+					$linkWrapper.addClass('active');
+				}
 				$link = $('<span class="current">' + (options.text) + '</span>');
 			} else {
-				$link = $('<a href="' + o.hrefText + (pageIndex + 1) + '" class="page-link">' + (options.text) + '</a>');
-				$link.click(function(e){
-					methods._selectPage.call(panel, pageIndex);
-					e.preventDefault();
+				$link = $('<a href="' + o.hrefTextPrefix + (pageIndex + 1) + o.hrefTextSuffix + '" class="page-link">' + (options.text) + '</a>');
+				$link.click(function(event){
+					return methods._selectPage.call(self, pageIndex, event);
 				});
 			}
+
 			if (options.classes) {
 				$link.addClass(options.classes);
 			}
 
-			$(panel).append($link);
+			$linkWrapper.append($link);
+
+			if ($ul.length) {
+				$ul.append($linkWrapper);
+			} else {
+				self.append($linkWrapper);
+			}
 		},
 
-		_selectPage: function(pageIndex) {
-			var o = $(this).data('pagination');
+		_selectPage: function(pageIndex, event) {
+			var o = this.data('pagination');
 			o.currentPage = pageIndex;
 			if (o.selectOnClick) {
-				o.onClick(pageIndex + 1, $(this));
 				methods._draw.call(this);
-			} else {
-				o.onClick(pageIndex + 1, $(this));
 			}
+			return o.onPageClick(pageIndex + 1, event);
 		}
 
 	};
-	
+
 	$.fn.pagination = function(method) {
 
 		// Method calling logic

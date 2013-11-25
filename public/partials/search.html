@@ -1,7 +1,16 @@
 <ng-include src="'partials/header.html'"></ng-include>
 
-<div class="notifier" ng:show="loaded && (count == 0)"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/6/18/Bglnq.jpg"/></div>
-<div class="notifier" ng:show="!loaded"><img src="http://geoffreymoller-collect.s3.amazonaws.com/2012/7/10/funny-gifs-steven-seagals-epic-run.gif"/></div>
+<div class="notifier" ng:show="loaded && (count == 0)">
+Nothing!
+</div>
+<div class="notifier" ng:show="!loaded">
+  <div id="clock_container">
+    <div class="clock">
+      <div class="clock_knob"></div>
+      <div class="clock_hand"></div>
+    </div>
+  </div>
+</div>
 
 <ul id="links" class="{{listType}}">
   <li class="{{itemClass | selectedItem}}" ng:repeat="link in links">
