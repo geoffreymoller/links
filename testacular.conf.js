@@ -7,7 +7,7 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'public/javascripts/vendor/jquery-1.7.min.js',
+  'public/javascripts/vendor/jquery-2.0.3.min.js',
   'public/javascripts/vendor/jquery.imagesloaded.js',
   'public/javascripts/vendor/underscore-min.js',
   'public/javascripts/vendor/angular/angular.min.js',
