@@ -14,16 +14,14 @@
 
 <ul id="links" class="{{listType}}">
   <li class="{{itemClass | selectedItem}}" ng:repeat="link in links">
+    <span ng-click="handleDelete(link)" class="delete">[delete]</span>
     <span ng:show="!link.edit" ng-click="handleEdit(link)" class="edit">[edit]</span>
     <div ng:show="link.edit">
       <span ng-click="handleSave(link)" class="save">[save]</span>
       <span ng-click="handleCancel(link)" class="cancel">[cancel]</span>
     </div>
-    <span ng-click="handleDelete(link)" class="delete">[delete]</span>
 
-    <div ng:show="listType != 'images' &&
-                  !isImage(uri(link)) &&
-                  link.value.thumbnail_url" class="image-frame">
+    <div ng:show="showThumbnail(link)" class="image-frame">
       <img gm-cropped-image ng:show="link.value.thumbnail_url" />
     </div>
 

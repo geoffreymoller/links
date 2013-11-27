@@ -113,7 +113,7 @@ ul#links li a.link {
 
 ul#links input, 
 ul#links textarea{
-  width: 600px; 
+  width: 470px; 
 }
 
 ul#links.images input, 
@@ -199,17 +199,23 @@ span.cancel,
 span.edit {
   display: block;
   cursor: pointer;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-}
-span.edit {
-  right: 70px;
-}
-span.save {
-  right: 110px;
-}
-span.cancel {
-  right: 60px;
+  float: right;
+  width: 48px;
+  height: 48px;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+span.edit {
+  background: url(/images/ic_menu_edit.png);
+}
+span.delete {
+  background: url(/images/btn_dialog_normal.png);
+}
+span.cancel {
+  background: url(/images/ic_menu_revert.png);
+}
+span.save {
+  background: url(/images/ic_menu_save.png);
+}

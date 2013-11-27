@@ -270,6 +270,10 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
     return uri.search(/png|jpg|jpeg|gif$/) !== -1;
   }
 
+  $scope.showThumbnail = function(link){
+    return $scope.listType !== 'images' && !$scope.isImage($scope.uri(link)) && link.value.thumbnail_url;
+  }
+
 }
 
 SearchController.$inject = ['$scope', '$rootScope', '$http', '$location', '$routeParams', '$data', '$ui', '$pagination'];
