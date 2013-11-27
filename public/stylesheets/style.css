@@ -70,11 +70,8 @@ div.image-frame{
   min-height: 92px;
   min-width: 92px;
   padding: 3px; 
-  background: #fff;
+  background: #FFFFFF;
   border: 1px solid #ccc;
-  -moz-border-radius: 2px; 
-  -webkit-border-radius: 2px; 
-  border-radius: 2px; 
   margin-right: 8px; 
 }
 
