@@ -103,7 +103,7 @@ var SearchController = function($scope, $rootScope, $http, $location, $routePara
 
   $scope.handleDelete = function(link){
     var id = link.id;
-    var rev = link.value.rev;
+    var rev = link.value._rev;
     if(confirm('Are you sure you want to delete the link?')){
       //TODO - use a resource 
       var promise = $http.get('/delete?id=' + id + '&rev=' + rev);
