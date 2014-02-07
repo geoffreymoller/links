@@ -1,1 +1,2 @@
-<a class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri | truncate:100 }}</a>
+<a ng-show="showThumbnail(link)" class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri | truncate:75 }}</a>
+<a ng-show="!showThumbnail(link)" class="link" href="{{link.value | uri}}" target="_blank">{{link.value | uri | truncate:100 }}</a>
