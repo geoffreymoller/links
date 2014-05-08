@@ -37,7 +37,8 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use(require("connect-assets")());
+  app.use(express.static(__dirname + '/assets'));
 });
 
 app.configure('development', function(){
@@ -70,8 +71,8 @@ app.post('/link', function(req, res){
   else{
     var uri = link.value.uri;
     var isImage = /(\.jpg|\.jpeg|\.gif|\.png)$/.test(uri)
-    var saveImage = link.value.saveImage === 'true'; 
-    var deferred = getEmbedlyInfo(uri); 
+    var saveImage = link.value.saveImage === 'true';
+    var deferred = getEmbedlyInfo(uri);
     deferred.then(function(embedlyObject){
       getImageAndSave(uri, embedlyObject);
     }, function(res){
@@ -124,7 +125,7 @@ app.post('/link', function(req, res){
     }
 
     var callback = getCallback('Document Saved!', res);
-    var id; 
+    var id;
     if(id = link.id){
       db.merge(id, payload, callback);
     }
@@ -142,7 +143,7 @@ app.get('/delete', function(req, res){
   var id = query.id;
   var rev = query.rev;
   var callback = getCallback('Link Deleted!', res);
-  db.remove(id, rev, callback); 
+  db.remove(id, rev, callback);
 });
 
 function upload_image(path){
