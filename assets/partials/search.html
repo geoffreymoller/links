@@ -35,13 +35,12 @@
       <div ng:show="link.edit"><label ng:show="link.edit" ng:model="link.value.uri">{{link.value.uri}}</label></div>
 
       <div ng:show="!link.edit" class="tags clearfix">
-        <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a> 
+        <a ng:repeat="tag in link.value.tags" href="#/search/{{tag}}">{{tag | truncate:30}}</a>
       </div>
       <div ng:show="link.edit">
-        <input type="text" 
+        <input type="text"
                class="tags"
-               ng:model="link.value.tags" 
-               autofocus 
+               ng:model="link.value.tags"
         />
       </div>
       <div ng:dblclick="notesClick()" class="{{notesClass | selectedNote}}" ng:bind-html-unsafe="link.value.notes" ng:show="!link.edit && link.value.notes"></div>
